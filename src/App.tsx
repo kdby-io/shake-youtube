@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
-import { video } from "./services/youtube";
+// import { useEffect, useState } from "react";
+// import { video } from "./services/youtube";
 import ChapterPlayLists from "./components/ChapterPlayLists";
+import useVideoInfo from "./hooks/useVideoInfo";
 import "./App.css";
 
 const useVideoId = () => new URLSearchParams(window.location.search).get("v");
 
 function App() {
   const videoId: string = useVideoId() ?? "SWqQQ6Yb-6g";
-  const [videoForShake, setvideoForShake] = useState<any>(null);
-
-  const getVideoInfo = async () => {
-    setvideoForShake(await video(videoId));
-  };
-
-  useEffect(() => {
-    getVideoInfo();
-  }, [videoId]);
+  const videoForShake = useVideoInfo(videoId);
 
   return (
     <>
@@ -38,17 +31,13 @@ function App() {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
       ></iframe>
-
       <strong>타이틀</strong>
-      {videoForShake && <p>{videoForShake.title}</p>}
+      <p>{videoForShake.title}</p>
       <div style={{ height: "30px" }}></div>
-
-      {videoForShake && (
-        <ChapterPlayLists
-          description={videoForShake.description}
-          videoId={videoId}
-        />
-      )}
+      <ChapterPlayLists
+        description={videoForShake.description}
+        videoId={videoId}
+      />
     </>
   );
 }
