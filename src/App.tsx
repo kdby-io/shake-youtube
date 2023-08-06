@@ -1,7 +1,6 @@
-// import { useEffect, useState } from "react";
-// import { video } from "./services/youtube";
 import ChapterPlayLists from "./components/ChapterPlayLists";
 import useVideoInfo from "./hooks/useVideoInfo";
+import useChapters from "./hooks/useChapters";
 import "./App.css";
 
 const useVideoId = () => new URLSearchParams(window.location.search).get("v");
@@ -9,6 +8,7 @@ const useVideoId = () => new URLSearchParams(window.location.search).get("v");
 function App() {
   const videoId: string = useVideoId() ?? "SWqQQ6Yb-6g";
   const videoForShake = useVideoInfo(videoId);
+  const chapters = useChapters(videoForShake.description);
 
   return (
     <>
@@ -34,10 +34,7 @@ function App() {
       <strong>타이틀</strong>
       <p>{videoForShake.title}</p>
       <div style={{ height: "30px" }}></div>
-      <ChapterPlayLists
-        description={videoForShake.description}
-        videoId={videoId}
-      />
+      <ChapterPlayLists chapters={chapters} videoId={videoId} />
     </>
   );
 }
