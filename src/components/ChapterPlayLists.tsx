@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import parseYouTubeChapters from "../utils/parseYouTubeChapters";
 
 interface chapterItem {
@@ -7,8 +6,9 @@ interface chapterItem {
   title: string;
 }
 
-function ChapterPlayLists({ description, videoId }: any) {
-  const [chapters, setChapters] = useState<any>(null);
+function ChapterPlayLists(props: { description: string; videoId: string }) {
+  const { description, videoId } = props;
+  const [chapters, setChapters] = useState<any>([]);
 
   const getChaptersInfo = async () => {
     setChapters(parseYouTubeChapters(description));
@@ -18,18 +18,15 @@ function ChapterPlayLists({ description, videoId }: any) {
     getChaptersInfo();
   }, [description]);
 
-  chapters && console.log(chapters);
-
   return (
     <>
-      {chapters &&
-        chapters.map((item: any) => {
-          return (
-            <div key={item.title}>
-              <ChapterPlayListItem item={item} videoId={videoId} />
-            </div>
-          );
-        })}
+      {chapters.map((item: any) => {
+        return (
+          <div key={item.title}>
+            <ChapterPlayListItem item={item} videoId={videoId} />
+          </div>
+        );
+      })}
     </>
   );
 }
