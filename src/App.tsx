@@ -1,11 +1,7 @@
 import ChapterPlayLists from "./components/ChapterPlayLists";
 import useVideoInfo from "./hooks/useVideoInfo";
 import useChapters from "./hooks/useChapters";
-import Youtube, {
-  YouTubeEvent,
-  YouTubePlayer,
-  YouTubeProps,
-} from "react-youtube";
+import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 import "./App.css";
 import { useState } from "react";
 import Controller from "./components/Controller";
@@ -20,7 +16,7 @@ function App() {
   const videoId: string = useVideoId() ?? "SWqQQ6Yb-6g";
   const videoForShake = useVideoInfo(videoId);
   const chapters = useChapters(videoForShake.description);
-  const [player, setPlayer] = useState<object>({});
+  const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [nowPlaying, setNowPlaying] = useState<boolean>(false);
 
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
@@ -36,16 +32,16 @@ function App() {
   };
 
   const handleChapterClick = (s: number) => {
-    player.seekTo(s);
-    player.playVideo();
+    player?.seekTo(s, true);
+    player?.playVideo();
   };
 
   const handlePlayButtonClick = () => {
-    player.playVideo();
+    player?.playVideo();
   };
 
   const handlePauseButtonClick = () => {
-    player.pauseVideo();
+    player?.pauseVideo();
   };
 
   return (
