@@ -60,15 +60,11 @@ function App() {
         onPlayClick={handlePlayButtonClick}
         onPauseClick={handlePauseButtonClick}
       />
-
-      <div style={{ height: "30px" }}></div>
-      {player && (
-        <ChapterPlayLists
-          chapters={chapters}
-          videoId={videoId}
-          onClick={handleChapterClick}
-        />
-      )}
+      <ChapterPlayLists
+        chapters={chapters}
+        videoId={videoId}
+        onClick={handleChapterClick}
+      />
     </>
   );
 }
