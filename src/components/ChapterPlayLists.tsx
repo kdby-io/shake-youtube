@@ -12,35 +12,28 @@ function ChapterPlayLists(props: {
 
   return (
     <>
-      <div style={{ paddingBottom: "30px" }}>
-        ❤️❤️❤️❤️리스트 클릭해보셔유❤️❤️❤️❤️
-      </div>
-      {chapters.map((item: any) => {
-        return (
-          <div key={item.title}>
-            <ChapterPlayListItem
-              item={item}
-              videoId={videoId}
-              onClick={onClick}
-            />
-          </div>
-        );
-      })}
+      <ul role="list" className="divide-y divide-gray-500">
+        {chapters.map((item: any) => {
+          return (
+            <li
+              key={item.title}
+              className="flex justify-between gap-x-6 py-5 cursor-pointer"
+              onClick={() => onClick(item.start)}
+            >
+              <ChapterPlayListItem item={item} videoId={videoId} />
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 }
 
-function ChapterPlayListItem(props: {
-  item: chapterItem;
-  videoId: string;
-  onClick: any;
-}) {
-  const { item, onClick } = props;
+function ChapterPlayListItem(props: { item: chapterItem; videoId: string }) {
+  const { item } = props;
   return (
     <>
-      <div
-        onClick={() => onClick(item.start)}
-      >{`시작 시간: ${item.start} | 타이틀: ${item.title} `}</div>
+      <div>{`${item.title} `}</div>
     </>
   );
 }

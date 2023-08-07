@@ -5,6 +5,7 @@ import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 import "./App.css";
 import { useState } from "react";
 import Controller from "./components/Controller";
+import Title from "./components/Title";
 
 const useVideoId = () => new URLSearchParams(window.location.search).get("v");
 const playerOpts: YouTubeProps["opts"] = {
@@ -31,6 +32,10 @@ function App() {
     setNowPlaying(false);
   };
 
+  const onPlayerEnd = () => {
+    setNowPlaying(false);
+  };
+
   const handleChapterClick = (s: number) => {
     player?.seekTo(s, true);
     player?.playVideo();
@@ -46,24 +51,29 @@ function App() {
 
   return (
     <>
-      <h1>Shake Youtube</h1>
-      <p>http://localhost:5173/watch?v={videoId}</p>
-      <Youtube
+      {videoForShake && (
+        <Title
+          title={videoForShake?.title}
+          thumbnailImage={videoForShake?.thumbnails?.maxres?.url}
+        />
+      )}
+      <ChapterPlayLists
+        chapters={chapters}
         videoId={videoId}
-        opts={playerOpts}
-        onReady={onPlayerReady}
-        onPlay={onPlayerPlay}
-        onPause={onPlayerPause}
+        onClick={handleChapterClick}
       />
       <Controller
         nowPlaying={nowPlaying}
         onPlayClick={handlePlayButtonClick}
         onPauseClick={handlePauseButtonClick}
       />
-      <ChapterPlayLists
-        chapters={chapters}
+      <Youtube
         videoId={videoId}
-        onClick={handleChapterClick}
+        opts={playerOpts}
+        onReady={onPlayerReady}
+        onPlay={onPlayerPlay}
+        onPause={onPlayerPause}
+        onEnd={onPlayerEnd}
       />
     </>
   );

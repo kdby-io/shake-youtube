@@ -7,12 +7,14 @@ function Controller(props: {
 
   return (
     <>
-      {nowPlaying && (
-        <button onClick={() => onPauseClick()}>정지버튼 ⏸️</button>
-      )}
-      {!nowPlaying && (
-        <button onClick={() => onPlayClick()}>플레이버튼 ▶️</button>
-      )}
+      <div>
+        {nowPlaying && (
+          <button onClick={() => onPauseClick()}>정지버튼 ⏸️</button>
+        )}
+        {!nowPlaying && (
+          <button onClick={() => onPlayClick()}>플레이버튼 ▶️</button>
+        )}
+      </div>
     </>
   );
 }
