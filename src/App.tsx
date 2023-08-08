@@ -3,7 +3,7 @@ import useVideoInfo from "./hooks/useVideoInfo";
 import useChapters from "./hooks/useChapters";
 import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 import "./App.css";
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import Controller from "./components/Controller";
 import Title from "./components/Title";
 
@@ -19,6 +19,10 @@ function App() {
   const chapters = useChapters(videoForShake.description);
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [nowPlaying, setNowPlaying] = useState<boolean>(false);
+
+  useLayoutEffect(() => {
+    document.body.style.backgroundColor = "#0F1015";
+  });
 
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
     setPlayer(event.target);
@@ -51,12 +55,11 @@ function App() {
 
   return (
     <>
-      {videoForShake && (
-        <Title
-          title={videoForShake?.title}
-          thumbnailImage={videoForShake?.thumbnails?.maxres?.url}
-        />
-      )}
+      <Title
+        title={videoForShake?.title}
+        thumbnailImage={videoForShake?.thumbnails?.maxres?.url}
+      />
+
       <ChapterPlayLists
         chapters={chapters}
         videoId={videoId}

@@ -11,13 +11,13 @@ function ChapterPlayLists(props: {
   const { chapters, videoId, onClick } = props;
 
   return (
-    <>
-      <ul role="list" className="divide-y divide-gray-500">
+    <div className="pt-12">
+      <ul role="list" className="divide-y divide-gray-800">
         {chapters.map((item: any) => {
           return (
             <li
               key={item.title}
-              className="flex justify-between gap-x-6 py-5 cursor-pointer"
+              className="flex pl-4 py-6 cursor-pointer"
               onClick={() => onClick(item.start)}
             >
               <ChapterPlayListItem item={item} videoId={videoId} />
@@ -25,7 +25,7 @@ function ChapterPlayLists(props: {
           );
         })}
       </ul>
-    </>
+    </div>
   );
 }
 
@@ -33,7 +33,7 @@ function ChapterPlayListItem(props: { item: chapterItem; videoId: string }) {
   const { item } = props;
   return (
     <>
-      <div>{`${item.title} `}</div>
+      <div className="text-base text-gray-500">{`${item.title}`}</div>
     </>
   );
 }
