@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import parseYouTubeChapters from "../utils/parseYouTubeChapters";
+import { Chapter } from "../services/youtube";
 
-function useChapters(description: string) {
-  const [chapters, setChapters] = useState<any>([]);
+export const useChapters = (description: string) => {
+  const [chapters, setChapters] = useState<Chapter[]>([]);
 
   const getChaptersInfo = async () => {
     setChapters(parseYouTubeChapters(description));
@@ -14,5 +15,3 @@ function useChapters(description: string) {
 
   return chapters;
 }
-
-export default useChapters;

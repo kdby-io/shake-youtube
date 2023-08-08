@@ -1,7 +1,7 @@
 import "./App.css";
 import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 import useVideoInfo from "./hooks/useVideoInfo";
-import useChapters from "./hooks/useChapters";
+import { useChapters } from "./hooks/useChapters";
 import { useSearchParams } from "./hooks/useSearchParams";
 import { useState, useLayoutEffect } from "react";
 import { ChapterPlayLists } from "./components/ChapterPlayLists";
