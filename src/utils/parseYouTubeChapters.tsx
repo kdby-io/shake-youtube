@@ -1,3 +1,5 @@
+import { Chapter } from "../services/youtube";
+
 function makeChapterParser(
   startRx: RegExp,
   lineRx: RegExp,
@@ -9,7 +11,7 @@ function makeChapterParser(
   textIndex += 1;
 
   return function (description: string) {
-    const chapters: Array<any> = [];
+    const chapters: Chapter[] = [];
 
     const firstTimestamp = description.search(startRx);
     if (firstTimestamp === -1) {

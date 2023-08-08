@@ -1,6 +1,6 @@
 import "./App.css";
 import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
-import useVideoInfo from "./hooks/useVideoInfo";
+import { useVideoInfo } from "./hooks/useVideoInfo";
 import { useChapters } from "./hooks/useChapters";
 import { useSearchParams } from "./hooks/useSearchParams";
 import { useState, useLayoutEffect } from "react";
@@ -14,9 +14,9 @@ const playerOpts: YouTubeProps["opts"] = {
 };
 
 function App() {
-  const videoId: string = useSearchParams("v") ?? "SWqQQ6Yb-6g";
+  const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
   const videoForShake = useVideoInfo(videoId);
-  const chapters = useChapters(videoForShake.description);
+  const chapters = useChapters(videoForShake?.description ?? "");
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [nowPlaying, setNowPlaying] = useState<boolean>(false);
 
@@ -56,8 +56,8 @@ function App() {
   return (
     <>
       <Title
-        title={videoForShake?.title}
-        thumbnailImage={videoForShake?.thumbnails?.maxres?.url}
+        title={videoForShake?.title ?? ""}
+        thumbnailImage={videoForShake?.thumbnails.maxres.url ?? ""}
       />
 
       <ChapterPlayLists

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { video } from "../services/youtube";
+import { VideoListResponse, video } from "../services/youtube";
 
-function useVideoInfo(videoId: string) {
-  const [videoForShake, setvideoForShake] = useState<any>({});
+export const useVideoInfo = (videoId: string) => {
+  const [videoForShake, setvideoForShake] = useState<VideoListResponse["items"][0]["snippet"]>();
 
   const getVideoInfo = async () => {
     setvideoForShake(await video(videoId));
@@ -14,5 +14,3 @@ function useVideoInfo(videoId: string) {
 
   return videoForShake;
 }
-
-export default useVideoInfo;
