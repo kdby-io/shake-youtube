@@ -4,7 +4,7 @@ import useChapters from "./hooks/useChapters";
 import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 import "./App.css";
 import { useState, useLayoutEffect } from "react";
-import Controller from "./components/Controller";
+import { Controller } from "./components/Controller";
 import { Title } from "./components/Title";
 import { useSearchParams } from "./hooks/useSearchParams";
 
