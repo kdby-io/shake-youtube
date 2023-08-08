@@ -1,9 +1,10 @@
 import axios from "axios";
 
 export type Chapter = {
-  start: number
-  title: string
-}
+  start: number;
+  title: string;
+  end: number | undefined;
+};
 
 const YoutubeApiClient = axios.create({
   baseURL: "https://youtube.googleapis.com/youtube/v3",
@@ -12,27 +13,27 @@ const YoutubeApiClient = axios.create({
 
 export type VideoListResponse = {
   items: {
-    id: string
+    id: string;
     snippet: {
-      publishedAt: string
-      channelId: string
-      title: string
-      description: string
+      publishedAt: string;
+      channelId: string;
+      title: string;
+      description: string;
       thumbnails: {
         default: {
-          url: string
-          width: number
-          height: number
-        }
+          url: string;
+          width: number;
+          height: number;
+        };
         maxres: {
-          url: string
-          width: number
-          height: number
-        }
-      }
-    }
-  }[]
-}
+          url: string;
+          width: number;
+          height: number;
+        };
+      };
+    };
+  }[];
+};
 export const video = async (videoId: string) => {
   try {
     const response = await YoutubeApiClient.get<VideoListResponse>("videos", {

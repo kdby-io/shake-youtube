@@ -34,10 +34,12 @@ function makeChapterParser(
       const minutes = parseInt(match[timestampIndex + 1], 10);
       const seconds = parseInt(match[timestampIndex + 2], 10);
       const title = match[textIndex].trim();
+      let end = undefined;
 
       chapters.push({
         start: hours * 60 * 60 + minutes * 60 + seconds,
         title: title.trim(),
+        end: end,
       });
     }
 
@@ -95,6 +97,16 @@ export default function parseYouTubeChapters(description: string) {
   if (chapters.length === 0) chapters = postfixParser(description);
   if (chapters.length === 0) chapters = postfixParenParser(description);
   if (chapters.length === 0) chapters = prefixParser(description);
+
+  for (let i = 0; i < chapters.length - 1; i++) {
+    const currentChapter = chapters[i];
+    const nextChapter = chapters[i + 1];
+    currentChapter.end = nextChapter.start;
+  }
+
+  // The last chapter doesn't have an end time (it goes to the end of the video)
+  const lastChapter = chapters[chapters.length - 1];
+  lastChapter.end = undefined; // or set it to the end of the video duration
 
   return chapters;
 }

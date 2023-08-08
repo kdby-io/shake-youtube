@@ -13,12 +13,15 @@ const playerOpts: YouTubeProps["opts"] = {
   width: "640",
 };
 
+var timer: any;
+
 function App() {
   const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
   const videoForShake = useVideoInfo(videoId);
   const chapters = useChapters(videoForShake?.description ?? "");
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [nowPlaying, setNowPlaying] = useState<boolean>(false);
+  const [playerTime, setPlayerTime] = useState<number | undefined>(-10);
 
   useLayoutEffect(() => {
     document.body.style.backgroundColor = "#0F1015";
@@ -28,16 +31,27 @@ function App() {
     setPlayer(event.target);
   };
 
-  const onPlayerPlay = () => {
-    setNowPlaying(true);
-  };
+  const onPlayerStateChange = async () => {
+    const newState = await player?.getPlayerState();
 
-  const onPlayerPause = () => {
-    setNowPlaying(false);
-  };
+    console.log(newState);
 
-  const onPlayerEnd = () => {
-    setNowPlaying(false);
+    if (newState === 0) {
+      setNowPlaying(false);
+      clearInterval(timer);
+    } else if (newState === 1) {
+      setNowPlaying(true);
+      timer = setInterval(async () => {
+        const time = await player?.getCurrentTime();
+        setPlayerTime(time);
+        console.log(time);
+      }, 200);
+    } else if (newState === 2) {
+      setNowPlaying(false);
+      clearInterval(timer);
+    } else {
+      clearInterval(timer);
+    }
   };
 
   const handleChapterClick = (s: number) => {
@@ -59,10 +73,10 @@ function App() {
         title={videoForShake?.title ?? ""}
         thumbnailImage={videoForShake?.thumbnails.maxres.url ?? ""}
       />
-
       <ChapterPlayLists
         chapters={chapters}
         onClick={handleChapterClick}
+        playerTime={playerTime}
       />
       <Controller
         nowPlaying={nowPlaying}
@@ -73,9 +87,7 @@ function App() {
         videoId={videoId}
         opts={playerOpts}
         onReady={onPlayerReady}
-        onPlay={onPlayerPlay}
-        onPause={onPlayerPause}
-        onEnd={onPlayerEnd}
+        onStateChange={onPlayerStateChange}
       />
     </>
   );
