@@ -1,12 +1,12 @@
-import ChapterPlayLists from "./components/ChapterPlayLists";
+import "./App.css";
+import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 import useVideoInfo from "./hooks/useVideoInfo";
 import useChapters from "./hooks/useChapters";
-import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
-import "./App.css";
+import { useSearchParams } from "./hooks/useSearchParams";
 import { useState, useLayoutEffect } from "react";
+import { ChapterPlayLists } from "./components/ChapterPlayLists";
 import { Controller } from "./components/Controller";
 import { Title } from "./components/Title";
-import { useSearchParams } from "./hooks/useSearchParams";
 
 const playerOpts: YouTubeProps["opts"] = {
   height: "390",
@@ -62,7 +62,6 @@ function App() {
 
       <ChapterPlayLists
         chapters={chapters}
-        videoId={videoId}
         onClick={handleChapterClick}
       />
       <Controller

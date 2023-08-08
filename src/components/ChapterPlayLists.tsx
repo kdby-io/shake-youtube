@@ -1,26 +1,21 @@
-interface chapterItem {
-  start: string;
-  title: string;
+import { Chapter } from "../services/youtube";
+
+type Props = {
+  chapters: Chapter[]
+  onClick: (moveTo: number) => void
 }
-
-function ChapterPlayLists(props: {
-  chapters: Array<any>;
-  videoId: string;
-  onClick: any;
-}) {
-  const { chapters, videoId, onClick } = props;
-
+export const ChapterPlayLists = ({ chapters, onClick }: Props) => {
   return (
     <div className="pt-12">
       <ul role="list" className="divide-y divide-gray-800">
-        {chapters.map((item: any) => {
+        {chapters.map(item => {
           return (
             <li
               key={item.title}
               className="flex pl-4 py-6 cursor-pointer"
               onClick={() => onClick(item.start)}
             >
-              <ChapterPlayListItem item={item} videoId={videoId} />
+              <ChapterPlayListItem item={item} />
             </li>
           );
         })}
@@ -29,13 +24,5 @@ function ChapterPlayLists(props: {
   );
 }
 
-function ChapterPlayListItem(props: { item: chapterItem; videoId: string }) {
-  const { item } = props;
-  return (
-    <>
-      <div className="text-base text-gray-500">{`${item.title}`}</div>
-    </>
-  );
-}
-
-export default ChapterPlayLists;
+const ChapterPlayListItem = ({ item }: { item: Chapter }) => 
+  <div className="text-base text-gray-500">{item.title}</div>
