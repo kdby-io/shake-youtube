@@ -6,15 +6,15 @@ import "./App.css";
 import { useState, useLayoutEffect } from "react";
 import Controller from "./components/Controller";
 import Title from "./components/Title";
+import { useSearchParams } from "./hooks/useSearchParams";
 
-const useVideoId = () => new URLSearchParams(window.location.search).get("v");
 const playerOpts: YouTubeProps["opts"] = {
   height: "390",
   width: "640",
 };
 
 function App() {
-  const videoId: string = useVideoId() ?? "SWqQQ6Yb-6g";
+  const videoId: string = useSearchParams("v") ?? "SWqQQ6Yb-6g";
   const videoForShake = useVideoInfo(videoId);
   const chapters = useChapters(videoForShake.description);
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
