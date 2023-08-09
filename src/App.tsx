@@ -3,7 +3,7 @@ import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 import { useVideoInfo } from "./hooks/useVideoInfo";
 import { useChapters } from "./hooks/useChapters";
 import { useSearchParams } from "./hooks/useSearchParams";
-import { useState, useLayoutEffect } from "react";
+import { useState } from "react";
 import { ChapterPlayLists } from "./components/ChapterPlayLists";
 import { Controller } from "./components/Controller";
 import { Title } from "./components/Title";
@@ -22,10 +22,6 @@ function App() {
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [nowPlaying, setNowPlaying] = useState<boolean>(false);
   const [playerTime, setPlayerTime] = useState<number | undefined>(-10);
-
-  useLayoutEffect(() => {
-    document.body.style.backgroundColor = "#0F1015";
-  });
 
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
     setPlayer(event.target);
