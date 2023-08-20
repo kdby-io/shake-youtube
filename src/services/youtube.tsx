@@ -3,7 +3,7 @@ import axios from "axios";
 export type Chapter = {
   start: number;
   title: string;
-  end: number | undefined;
+  end: number;
 };
 
 const YoutubeApiClient = axios.create({

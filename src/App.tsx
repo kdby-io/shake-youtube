@@ -13,7 +13,7 @@ const playerOpts: YouTubeProps["opts"] = {
   width: "640",
 };
 
-var timer: any;
+let timer: number;
 
 function App() {
   const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
@@ -32,17 +32,17 @@ function App() {
 
     console.log(newState);
 
-    if (newState === 0) {
+    if (newState === Youtube.PlayerState.ENDED) {
       setNowPlaying(false);
       clearInterval(timer);
-    } else if (newState === 1) {
+    } else if (newState === Youtube.PlayerState.PLAYING) {
       setNowPlaying(true);
       timer = setInterval(async () => {
         const time = await player?.getCurrentTime();
         setPlayerTime(time);
         console.log(time);
       }, 200);
-    } else if (newState === 2) {
+    } else if (newState === Youtube.PlayerState.PAUSED) {
       setNowPlaying(false);
       clearInterval(timer);
     } else {

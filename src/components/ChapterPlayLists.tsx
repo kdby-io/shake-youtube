@@ -1,5 +1,4 @@
 import { Chapter } from "../services/youtube";
-import { useIsNowPlayingChapter } from "../hooks/useIsNowPlayingChapter";
 
 type Props = {
   chapters: Chapter[];
@@ -11,13 +10,14 @@ export const ChapterPlayLists = ({ chapters, onClick, playerTime }: Props) => {
     <div className="pt-12">
       <ul role="list" className="divide-y divide-gray-800">
         {chapters.map((item) => {
+          const playing = playerTime ? item.start <= playerTime && playerTime <= item.end : false;
           return (
             <li
               key={item.title}
               className="flex pl-4 py-6 cursor-pointer"
               onClick={() => onClick(item.start)}
             >
-              <ChapterPlayListItem item={item} playerTime={playerTime} />
+              <ChapterPlayListItem item={item} playing={playing} />
             </li>
           );
         })}
@@ -28,20 +28,14 @@ export const ChapterPlayLists = ({ chapters, onClick, playerTime }: Props) => {
 
 const ChapterPlayListItem = ({
   item,
-  playerTime,
+  playing,
 }: {
   item: Chapter;
-  playerTime: number | undefined;
+  playing: boolean;
 }) => {
-  const isNowPlayingChapter: Boolean = useIsNowPlayingChapter(
-    item.start,
-    item.end,
-    playerTime
-  );
-
   return (
     <>
-      {isNowPlayingChapter ? (
+      {playing ? (
         <div className="text-base text-white">{`(요고재생중) ${item.title}`}</div>
       ) : (
         <div className="text-base text-gray-500">{item.title}</div>
