@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export type Chapter = {
-  start: number;
   title: string;
+  start: number;
   end: number;
 };
 
