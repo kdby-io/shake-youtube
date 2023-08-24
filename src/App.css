@@ -8,3 +8,28 @@ body {
   padding: 2rem;
   text-align: center;
 }
+
+.not-playing {
+  color: #62656f;
+
+  .playing_icon {
+    display: none;
+  }
+}
+
+.not-playing:hover {
+  background-color: #17191d;
+
+  .playing_icon {
+    display: inline;
+    opacity: 40%;
+  }
+}
+
+.playing {
+  color: #ffffff;
+
+  .playing_icon {
+    display: inline;
+  }
+}
