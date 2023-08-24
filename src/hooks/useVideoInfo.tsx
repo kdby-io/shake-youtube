@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { VideoListResponse, video } from "../services/youtube";
 
 export const useVideoInfo = (videoId: string) => {
-  const [videoForShake, setvideoForShake] = useState<VideoListResponse["items"][0]["snippet"]>();
+  const [videoForShake, setvideoForShake] =
+    useState<VideoListResponse["items"][0]["snippet"]>();
 
   const getVideoInfo = async () => {
-    setvideoForShake(await video(videoId));
+    const videoInfo = await video(videoId);
+    setvideoForShake(videoInfo);
   };
 
   useEffect(() => {
@@ -13,4 +15,4 @@ export const useVideoInfo = (videoId: string) => {
   }, [videoId]);
 
   return videoForShake;
-}
+};

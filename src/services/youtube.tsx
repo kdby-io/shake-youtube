@@ -30,10 +30,16 @@ export type VideoListResponse = {
           width: number;
           height: number;
         };
+        medium: {
+          url: string;
+          width: number;
+          height: number;
+        };
       };
     };
   }[];
 };
+
 export const video = async (videoId: string) => {
   try {
     const response = await YoutubeApiClient.get<VideoListResponse>("videos", {

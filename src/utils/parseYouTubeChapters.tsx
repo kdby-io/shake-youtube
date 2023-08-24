@@ -19,6 +19,7 @@ function makeChapterParser(
     }
 
     const chapterLines = description.slice(firstTimestamp).split("\n");
+
     for (let i = 0; i < chapterLines.length; i += 1) {
       const line = chapterLines[i];
 
@@ -55,28 +56,32 @@ function addM(regex: RegExp) {
 
 // $timestamp $title
 const lawfulParser = makeChapterParser(
-  /^0?0:00/m,
+  /^(\d+):(\d+)/m,
   /^(?:(\d+):)?(\d+):(\d+)\s+(.*?)$/,
   0,
   3
 );
+
 // [$timestamp] $title
 const bracketsParser = makeChapterParser(
-  /^\[0?0:00\]/m,
+  /^\[(\d+):(\d+)\]/m,
   /^\[(?:(\d+):)?(\d+):(\d+)\]\s+(.*?)$/,
   0,
   3
 );
+
 // ($timestamp) $title
 const parensParser = makeChapterParser(
-  /^\(0?0:00\)/m,
+  /^\((\d+):(\d+)\)/m,
   /^\((?:(\d+):)?(\d+):(\d+)\)\s+(.*?)$/,
   0,
   3
 );
+
 // ($track_id. )$title $timestamp
 const postfixRx = /^(?:\d+\.\s+)?(.*)\s+(?:(\d+):)?(\d+):(\d+)$/;
 const postfixParser = makeChapterParser(addM(postfixRx), postfixRx, 1, 0);
+
 // ($track_id. )$title ($timestamp)
 const postfixParenRx = /^(?:\d+\.\s+)?(.*)\s+\(\s*(?:(\d+):)?(\d+):(\d+)\s*\)$/;
 const postfixParenParser = makeChapterParser(
@@ -85,6 +90,7 @@ const postfixParenParser = makeChapterParser(
   1,
   0
 );
+
 // $track_id. $timestamp $title
 const prefixRx = /^\d+\.\s+(?:(\d+):)?(\d+):(\d+)\s+(.*)$/;
 const prefixParser = makeChapterParser(addM(prefixRx), prefixRx, 0, 3);
@@ -105,7 +111,9 @@ export default function parseYouTubeChapters(description: string) {
 
   // The last chapter doesn't have an end time (it goes to the end of the video)
   const lastChapter = chapters[chapters.length - 1];
-  lastChapter.end = Infinity;
+  if (lastChapter) {
+    lastChapter.end = Infinity;
+  }
 
   return chapters;
 }

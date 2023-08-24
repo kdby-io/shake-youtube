@@ -71,7 +71,6 @@ function App() {
       timer = setInterval(async () => {
         const time = (await player?.getCurrentTime()) ?? 0;
         setPlayerTime(time);
-        console.log(time);
       }, 200);
     } else if (newState === Youtube.PlayerState.PAUSED) {
       setNowPlaying(false);
@@ -104,7 +103,11 @@ function App() {
     <>
       <Title
         title={videoForShake?.title ?? ""}
-        thumbnailImage={videoForShake?.thumbnails.maxres.url ?? ""}
+        thumbnailImage={
+          videoForShake?.thumbnails.maxres
+            ? videoForShake?.thumbnails.maxres.url ?? ""
+            : videoForShake?.thumbnails.medium.url ?? ""
+        }
       />
       <ChapterPlayLists
         chapters={shakedChapters}

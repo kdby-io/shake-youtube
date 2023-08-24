@@ -6,7 +6,8 @@ export const useChapters = (description: string) => {
   const [chapters, setChapters] = useState<Chapter[]>([]);
 
   const getChaptersInfo = async () => {
-    setChapters(parseYouTubeChapters(description));
+    const chaptersInfo = await parseYouTubeChapters(description);
+    setChapters(chaptersInfo);
   };
 
   useEffect(() => {
@@ -14,4 +15,4 @@ export const useChapters = (description: string) => {
   }, [description]);
 
   return chapters;
-}
+};
