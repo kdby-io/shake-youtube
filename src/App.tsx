@@ -5,7 +5,7 @@ import { useChapters } from "./hooks/useChapters";
 import { useSearchParams } from "./hooks/useSearchParams";
 import { useEffect, useState } from "react";
 import { ChapterPlayLists } from "./components/ChapterPlayLists";
-import { Controller } from "./components/Controller";
+// import { Controller } from "./components/Controller";
 import { Title } from "./components/Title";
 import { shuffle } from "lodash";
 
@@ -82,21 +82,23 @@ function App() {
   };
 
   const handleChapterClick = (s: number, playing: boolean) => {
-    if (playing) {
+    if (nowPlaying && playing) {
       player?.pauseVideo();
+    } else if (!nowPlaying && playing) {
+      player?.playVideo();
     } else {
       player?.seekTo(s, true);
       player?.playVideo();
     }
   };
 
-  const handlePlayButtonClick = () => {
-    player?.playVideo();
-  };
+  // const handlePlayButtonClick = () => {
+  //   player?.playVideo();
+  // };
 
-  const handlePauseButtonClick = () => {
-    player?.pauseVideo();
-  };
+  // const handlePauseButtonClick = () => {
+  //   player?.pauseVideo();
+  // };
 
   return (
     <>
@@ -109,12 +111,8 @@ function App() {
         onClick={handleChapterClick}
         playerTime={playerTime}
       />
-      <Controller
-        nowPlaying={nowPlaying}
-        onPlayClick={handlePlayButtonClick}
-        onPauseClick={handlePauseButtonClick}
-      />
       <Youtube
+        style={{ display: "none" }}
         videoId={videoId}
         opts={playerOpts}
         onReady={onPlayerReady}
