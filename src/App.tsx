@@ -19,7 +19,10 @@ let timer: number;
 function App() {
   const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
   const videoForShake = useVideoInfo(videoId);
-  const chapters = useChapters(videoForShake?.description ?? "");
+  const chapters = useChapters(
+    videoForShake?.description ?? "",
+    videoForShake?.comments ?? []
+  );
   const [shakedChapters, setShakedChapters] = useState(chapters);
   const startTimes = chapters.map((chapter) => chapter.start);
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);

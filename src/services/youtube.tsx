@@ -36,19 +36,70 @@ export type VideoListResponse = {
           height: number;
         };
       };
+      comments: string[];
     };
   }[];
 };
 
+export type Comment = {
+  authorDisplayName: string;
+  authorProfileImageUrl: string;
+  textDisplay: string;
+  publishedAt: string;
+};
+
 export const video = async (videoId: string) => {
   try {
-    const response = await YoutubeApiClient.get<VideoListResponse>("videos", {
+    const videoResponse = await YoutubeApiClient.get<VideoListResponse>(
+      "videos",
+      {
+        params: {
+          part: "snippet",
+          id: videoId,
+        },
+      }
+    );
+
+    const commentResponse = await YoutubeApiClient.get<any>("commentThreads", {
       params: {
         part: "snippet",
-        id: videoId,
+        videoId: videoId,
+        textFormat: "plainText",
+        order: "relevance",
       },
     });
-    return response.data.items[0].snippet;
+
+    const comments: any[] = commentResponse.data.items.map((item: any) => {
+      const comment = item.snippet.topLevelComment.snippet.textOriginal;
+      return comment;
+    });
+
+    const response: any = videoResponse.data.items[0].snippet;
+    response.comments = comments;
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const comment = async (videoId: string) => {
+  try {
+    const response = await YoutubeApiClient.get<any>("commentThreads", {
+      params: {
+        part: "snippet",
+        videoId: videoId,
+        textFormat: "plainText",
+        order: "relevance",
+      },
+    });
+
+    const comments: any[] = response.data.items.map((item: any) => {
+      const comment = item.snippet.topLevelComment.snippet.textOriginal;
+      return comment;
+    });
+
+    return comments;
   } catch (error) {
     console.log(error);
   }
