@@ -36,7 +36,7 @@ export const ChapterPlayLists = ({ chapters, onClick, playerTime }: Props) => {
 const ChapterPlayListItem = ({ item }: { item: Chapter }) => {
   return (
     <>
-      <div className="text-base">
+      <div className="text-base text-left">
         <img
           src={playing_icon}
           alt="playing_icon"
