@@ -58,26 +58,26 @@ function addM(regex: RegExp) {
   return regex;
 }
 
-// $timestamp $title
+// $timestamp $title OR $timestamp$title
 const lawfulParser = makeChapterParser(
   /^(\d+):(\d+)/m,
-  /^(?:(\d+):)?(\d+):(\d+)\s+(.*?)$/,
+  /^(?:(\d+):)?(\d+):(\d+)+(.*?)$/,
   0,
   3
 );
 
-// [$timestamp] $title
+// [$timestamp] $title OR [$timestamp]$title
 const bracketsParser = makeChapterParser(
   /^\[(\d+):(\d+)\]/m,
-  /^\[(?:(\d+):)?(\d+):(\d+)\]\s+(.*?)$/,
+  /^\[(?:(\d+):)?(\d+):(\d+)\]+(.*?)$/,
   0,
   3
 );
 
-// ($timestamp) $title
+// ($timestamp) $title OR ($timestamp)$title
 const parensParser = makeChapterParser(
   /^\((\d+):(\d+)\)/m,
-  /^\((?:(\d+):)?(\d+):(\d+)\)\s+(.*?)$/,
+  /^\((?:(\d+):)?(\d+):(\d+)\)+(.*?)$/,
   0,
   3
 );
@@ -95,8 +95,8 @@ const postfixParenParser = makeChapterParser(
   0
 );
 
-// $track_id. $timestamp $title
-const prefixRx = /^\d+\.\s+(?:(\d+):)?(\d+):(\d+)\s+(.*)$/;
+// $track_id. $timestamp $title OR $track_id. $timestamp$title
+const prefixRx = /^\d+\.\s+(?:(\d+):)?(\d+):(\d+)+(.*)$/;
 const prefixParser = makeChapterParser(addM(prefixRx), prefixRx, 0, 3);
 
 export default function parseYouTubeChapters(description: string) {
@@ -119,5 +119,6 @@ export default function parseYouTubeChapters(description: string) {
     lastChapter.end = Infinity;
   }
   // console.log(chapters);
+
   return chapters;
 }
