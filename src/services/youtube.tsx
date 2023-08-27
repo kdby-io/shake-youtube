@@ -70,7 +70,8 @@ export const video = async (videoId: string) => {
     });
 
     const comments: any[] = commentResponse.data.items.map((item: any) => {
-      const comment = item.snippet.topLevelComment.snippet.textOriginal;
+      let comment = item.snippet.topLevelComment.snippet.textOriginal;
+      comment = comment.replace(/\r/g, "");
       return comment;
     });
 
@@ -78,28 +79,6 @@ export const video = async (videoId: string) => {
     response.comments = comments;
 
     return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const comment = async (videoId: string) => {
-  try {
-    const response = await YoutubeApiClient.get<any>("commentThreads", {
-      params: {
-        part: "snippet",
-        videoId: videoId,
-        textFormat: "plainText",
-        order: "relevance",
-      },
-    });
-
-    const comments: any[] = response.data.items.map((item: any) => {
-      const comment = item.snippet.topLevelComment.snippet.textOriginal;
-      return comment;
-    });
-
-    return comments;
   } catch (error) {
     console.log(error);
   }

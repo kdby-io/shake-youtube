@@ -20,29 +20,33 @@ function makeChapterParser(
 
     const chapterLines = description.slice(firstTimestamp).split("\n");
 
+    // console.log(chapterLines);
+
     for (let i = 0; i < chapterLines.length; i += 1) {
       const line = chapterLines[i];
+      // console.log(line);
 
       const match = lineRx.exec(line);
-      if (!match) {
-        break;
+
+      if (match) {
+        const hours =
+          match[timestampIndex] !== undefined
+            ? parseInt(match[timestampIndex], 10)
+            : 0;
+        const minutes = parseInt(match[timestampIndex + 1], 10);
+        const seconds = parseInt(match[timestampIndex + 2], 10);
+        const title = match[textIndex].trim();
+
+        chapters.push({
+          start: hours * 60 * 60 + minutes * 60 + seconds,
+          title: title.trim(),
+          end: Infinity,
+        });
+      } else if (!match) {
       }
-
-      const hours =
-        match[timestampIndex] !== undefined
-          ? parseInt(match[timestampIndex], 10)
-          : 0;
-      const minutes = parseInt(match[timestampIndex + 1], 10);
-      const seconds = parseInt(match[timestampIndex + 2], 10);
-      const title = match[textIndex].trim();
-
-      chapters.push({
-        start: hours * 60 * 60 + minutes * 60 + seconds,
-        title: title.trim(),
-        end: Infinity,
-      });
     }
 
+    // console.log(chapters);
     return chapters;
   };
 }
@@ -114,6 +118,6 @@ export default function parseYouTubeChapters(description: string) {
   if (lastChapter) {
     lastChapter.end = Infinity;
   }
-
+  // console.log(chapters);
   return chapters;
 }
