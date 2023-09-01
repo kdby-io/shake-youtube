@@ -3,15 +3,23 @@ body {
 }
 
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+}
+
+.root_new {
+  margin: 0 auto;
+}
+
+.chapter-list {
+  color: #62656f;
+}
+
+.chapter-list li {
+  border-bottom: solid 1px #212121;
+  border-top: solid 1px #212121;
 }
 
 .not-playing {
-  color: #62656f;
-
   .playing_icon {
     display: none;
   }
@@ -27,9 +35,29 @@ body {
 }
 
 .playing {
-  color: #ffffff;
-
   .playing_icon {
     display: inline;
   }
+
+  .pause_icon {
+    display: none;
+  }
+}
+
+.now-playing {
+  .playing_icon {
+    display: none;
+  }
+  .pause_icon {
+    display: inline;
+  }
+}
+
+.playing span {
+  color: white;
+}
+
+.controller {
+  left: 50%;
+  transform: translateX(-50%);
 }

@@ -5,9 +5,9 @@ import { useChapters } from "./hooks/useChapters";
 import { useSearchParams } from "./hooks/useSearchParams";
 import { useEffect, useState } from "react";
 import { ChapterPlayLists } from "./components/ChapterPlayLists";
-// import { Controller } from "./components/Controller";
 import { Title } from "./components/Title";
 import { shuffle } from "lodash";
+import { Controller } from "./components/Controller";
 
 const playerOpts: YouTubeProps["opts"] = {
   height: "390",
@@ -94,35 +94,44 @@ function App() {
     }
   };
 
-  // const handlePlayButtonClick = () => {
-  //   player?.playVideo();
-  // };
+  const handlePlayButtonClick = () => {
+    player?.playVideo();
+  };
 
-  // const handlePauseButtonClick = () => {
-  //   player?.pauseVideo();
-  // };
+  const handlePauseButtonClick = () => {
+    player?.pauseVideo();
+  };
 
   return (
     <>
-      <Title
-        title={videoForShake?.title ?? ""}
-        thumbnailImage={
-          videoForShake?.thumbnails.maxres
-            ? videoForShake?.thumbnails.maxres.url ?? ""
-            : videoForShake?.thumbnails.medium.url ?? ""
-        }
-      />
-      <ChapterPlayLists
-        chapters={shakedChapters}
-        onClick={handleChapterClick}
-        playerTime={playerTime}
-      />
-      <Youtube
-        style={{ display: "none" }}
-        videoId={videoId}
-        opts={playerOpts}
-        onReady={onPlayerReady}
-        onStateChange={onPlayerStateChange}
+      <div className="root_new max-w-screen-sm">
+        <Title
+          title={videoForShake?.title ?? ""}
+          thumbnailImage={
+            videoForShake?.thumbnails.maxres
+              ? videoForShake?.thumbnails.maxres.url ?? ""
+              : videoForShake?.thumbnails.medium.url ?? ""
+          }
+        />
+        <ChapterPlayLists
+          chapters={shakedChapters}
+          onClick={handleChapterClick}
+          playerTime={playerTime}
+          nowPlaying={nowPlaying}
+        />
+        <Youtube
+          style={{ display: "none" }}
+          videoId={videoId}
+          opts={playerOpts}
+          onReady={onPlayerReady}
+          onStateChange={onPlayerStateChange}
+        />
+      </div>
+
+      <Controller
+        nowPlaying={nowPlaying}
+        onPlayClick={handlePlayButtonClick}
+        onPauseClick={handlePauseButtonClick}
       />
     </>
   );

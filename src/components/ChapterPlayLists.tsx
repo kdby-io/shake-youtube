@@ -1,15 +1,22 @@
 import { Chapter } from "../services/youtube";
 import playing_icon from "../assets/playing_icon.png";
+import pause_icon from "../assets/pause_icon.png";
 
 type Props = {
   chapters: Chapter[];
   onClick: (moveTo: number, palying: boolean) => void;
   playerTime: number | undefined;
+  nowPlaying: boolean;
 };
-export const ChapterPlayLists = ({ chapters, onClick, playerTime }: Props) => {
+export const ChapterPlayLists = ({
+  chapters,
+  onClick,
+  playerTime,
+  nowPlaying,
+}: Props) => {
   return (
     <div className="pt-12">
-      <ul role="list" className="divide-y divide-gray-800">
+      <ul role="list" className="divide-y chapter-list">
         {chapters.map((item) => {
           const playing = playerTime
             ? item.start <= playerTime && playerTime <= item.end
@@ -24,7 +31,11 @@ export const ChapterPlayLists = ({ chapters, onClick, playerTime }: Props) => {
               }
               onClick={() => onClick(item.start, playing)}
             >
-              <ChapterPlayListItem item={item} />
+              <ChapterPlayListItem
+                item={item}
+                playing={playing}
+                nowPlaying={nowPlaying}
+              />
             </li>
           );
         })}
@@ -33,16 +44,37 @@ export const ChapterPlayLists = ({ chapters, onClick, playerTime }: Props) => {
   );
 };
 
-const ChapterPlayListItem = ({ item }: { item: Chapter }) => {
+const ChapterPlayListItem = ({
+  item,
+  nowPlaying,
+  playing,
+}: {
+  item: Chapter;
+  nowPlaying: boolean;
+  playing: boolean;
+}) => {
   return (
     <>
-      <div className="text-base text-left">
+      <div
+        className={
+          nowPlaying
+            ? "text-base text-left now-playing"
+            : "text-base text-left not-now-playing"
+        }
+      >
         <img
           src={playing_icon}
           alt="playing_icon"
           className="playing_icon pr-4"
         ></img>
-        {item.title}
+        {playing && (
+          <img
+            src={pause_icon}
+            alt="pause_icon"
+            className="pause_icon pr-4"
+          ></img>
+        )}
+        <span>{item.title}</span>
       </div>
     </>
   );
