@@ -27,7 +27,7 @@ export const Controller = ({
     currentChapterIndex === 0 ? chapters.length - 1 : currentChapterIndex - 1;
 
   return (
-    <div className="">
+    <div className="hidden">
       <div className="controller flex items-center justify-between bg-controller-bg rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
         <div className="chapter-info flex basis-1/3 gap-2">
           <div className="playing-animation">애니메이션</div>
