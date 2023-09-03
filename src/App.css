@@ -19,41 +19,69 @@ body {
   border-top: solid 1px #212121;
 }
 
-.not-playing {
+.not-playingChapter {
+  .play_icon {
+    display: none;
+  }
+
   .playing_icon {
     display: none;
   }
 }
 
-.not-playing:hover {
+.not-playingChapter:hover {
   background-color: #17191d;
 
-  .playing_icon {
+  .play_icon {
     display: inline;
     opacity: 40%;
   }
 }
 
-.playing {
-  .playing_icon {
-    display: inline;
+.playingChapter {
+  .play_icon {
+    display: none;
   }
 
   .pause_icon {
     display: none;
+  }
+
+  .playing_icon {
+    display: inline;
+  }
+}
+
+.playingChapter:hover {
+  .playing_icon {
+    display: none;
+  }
+}
+
+.playingChapter:hover {
+  .now-playing {
+    .pause_icon {
+      display: inline;
+    }
+  }
+
+  .not-now-playing {
+    .play_icon {
+      display: inline;
+    }
   }
 }
 
 .now-playing {
-  .playing_icon {
+  .play_icon {
     display: none;
   }
   .pause_icon {
-    display: inline;
+    display: none;
   }
 }
 
-.playing span {
+.playingChapter span {
   color: white;
 }
 

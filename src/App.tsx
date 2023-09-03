@@ -102,6 +102,10 @@ function App() {
     player?.pauseVideo();
   };
 
+  const handleControllerButtonClick = (s: number) => {
+    player?.seekTo(s, true);
+  };
+
   return (
     <>
       <div className="root_new max-w-screen-sm">
@@ -117,7 +121,7 @@ function App() {
           chapters={shakedChapters}
           onClick={handleChapterClick}
           playerTime={playerTime}
-          nowPlaying={nowPlaying}
+          nowPlayerPlaying={nowPlaying}
         />
         <Youtube
           style={{ display: "none" }}
@@ -132,6 +136,9 @@ function App() {
         nowPlaying={nowPlaying}
         onPlayClick={handlePlayButtonClick}
         onPauseClick={handlePauseButtonClick}
+        chapters={shakedChapters}
+        playerTime={playerTime}
+        seekTo={handleControllerButtonClick}
       />
     </>
   );
