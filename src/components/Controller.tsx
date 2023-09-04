@@ -2,7 +2,7 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import pause_icon from "../assets/pause_icon.png";
 import play_icon from "../assets/play_icon.png";
 import { Chapter } from "../services/youtube";
-import playingIconData from '../assets/playing.json'
+import playingIconData from "../assets/playing.json";
 import { useEffect, useRef } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
@@ -32,28 +32,26 @@ export const Controller = ({
     currentChapterIndex === chapters.length - 1 ? 0 : currentChapterIndex + 1;
   const lastChapterIndex =
     currentChapterIndex === 0 ? chapters.length - 1 : currentChapterIndex - 1;
-  
+
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   useEffect(() => {
     if (lottieRef.current) {
-      nowPlaying ? lottieRef.current.play() : lottieRef.current.pause()
+      nowPlaying ? lottieRef.current.play() : lottieRef.current.pause();
     }
-  }, [nowPlaying])
+  }, [nowPlaying]);
 
   return (
-    <div className="hidden">
+    <div className="">
       <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-b-3xl px-14 py-7 fixed bottom-6 w-10/12">
-        <div className="flex basis-1/3 gap-2">
+        <div className="flex basis-1/3 items-center gap-6">
           <Lottie
             className="h-12 w-12"
             lottieRef={lottieRef}
             autoplay={false}
             animationData={playingIconData}
           />
-          <div>
-            {chapters[currentChapterIndex]?.title}
-          </div>
+          <div>{chapters[currentChapterIndex]?.title}</div>
         </div>
         <div className="flex justify-center">
           <button onClick={() => seekTo(chapters[lastChapterIndex].start)}>
