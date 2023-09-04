@@ -103,7 +103,12 @@ function App() {
   };
 
   const handleControllerButtonClick = (s: number) => {
-    player?.seekTo(s, true);
+    if (nowPlaying) {
+      player?.seekTo(s, true);
+    } else if (!nowPlaying) {
+      player?.seekTo(s, true);
+      player?.playVideo();
+    }
   };
 
   const handleControllerVolume = (volume: number) => {
