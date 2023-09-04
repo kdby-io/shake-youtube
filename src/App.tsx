@@ -14,7 +14,7 @@ const playerOpts: YouTubeProps["opts"] = {
   width: "1280",
 };
 
-let timer: NodeJS.Timeout
+let timer: NodeJS.Timeout;
 
 function App() {
   const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
@@ -38,7 +38,8 @@ function App() {
       const nextSecond = Math.ceil(playerTime);
       const doneChapter =
         startTimes.includes(nextSecond) &&
-        (0 < nextSecond - playerTime && nextSecond - playerTime <= 0.2)
+        0 < nextSecond - playerTime &&
+        nextSecond - playerTime <= 0.2;
 
       if (doneChapter) {
         const currentIndex = shakedChapters.findIndex(
@@ -111,7 +112,7 @@ function App() {
 
   return (
     <>
-      <div className="max-w-screen-sm mx-auto my-0">
+      <div className="max-w-screen-sm mx-auto my-0 mb-28">
         <Title
           title={videoForShake?.title ?? ""}
           thumbnailImage={
