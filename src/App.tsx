@@ -108,7 +108,7 @@ function App() {
 
   return (
     <>
-      <div className="root_new max-w-screen-sm">
+      <div className="max-w-screen-sm mx-auto my-0">
         <Title
           title={videoForShake?.title ?? ""}
           thumbnailImage={
