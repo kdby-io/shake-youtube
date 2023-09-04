@@ -2,10 +2,6 @@ body {
   background-color: #0f1015;
 }
 
-#root {
-  padding: 2rem;
-}
-
 .controller {
   left: 50%;
   transform: translateX(-50%);

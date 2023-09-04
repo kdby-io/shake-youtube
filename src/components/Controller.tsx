@@ -56,37 +56,29 @@ export const Controller = ({
           />
           <div>{chapters[currentChapterIndex]?.title}</div>
         </div>
-        <div className="flex items-center gap-6">
-          <div>
-            <img
-              className="cursor-pointer"
-              src={prev_icon}
-              alt="prev_icon"
-              onClick={() => seekTo(chapters[lastChapterIndex].start)}
-            ></img>
-          </div>
+        <div className="flex items-center gap-6 justify-center">
+          <img
+            className="cursor-pointer"
+            src={prev_icon}
+            alt="prev_icon"
+            onClick={() => seekTo(chapters[lastChapterIndex].start)}
+          ></img>
           <div
             className="w-14 h-14 rounded-full bg-[#FF003D] flex items-center justify-center cursor-pointer"
             onClick={nowPlaying ? () => onPauseClick() : () => onPlayClick()}
           >
             {nowPlaying ? (
-              <div>
-                <img src={pause_icon} alt="pause_icon"></img>
-              </div>
+              <img src={pause_icon} alt="pause_icon"></img>
             ) : (
-              <div>
-                <img src={play_icon} alt="play_icon"></img>
-              </div>
+              <img src={play_icon} alt="play_icon"></img>
             )}
           </div>
-          <div>
-            <img
-              className="cursor-pointer"
-              src={next_icon}
-              alt="next_icon"
-              onClick={() => seekTo(chapters[nextChapterIndex].start)}
-            ></img>
-          </div>
+          <img
+            className="cursor-pointer"
+            src={next_icon}
+            alt="next_icon"
+            onClick={() => seekTo(chapters[nextChapterIndex].start)}
+          ></img>
         </div>
         <div className="flex basis-1/3 justify-end items-center gap-3">
           <div>

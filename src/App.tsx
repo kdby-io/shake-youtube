@@ -112,8 +112,9 @@ function App() {
 
   return (
     <>
-      <div className="max-w-screen-sm mx-auto my-0 mb-28">
+      <div className="max-w-screen-sm mx-auto my-0 flex flex-col gap-12 pt-8 px-8 h-screen">
         <Title
+          className="flex-shrink-0"
           title={videoForShake?.title ?? ""}
           thumbnailImage={
             videoForShake?.thumbnails.maxres
@@ -122,13 +123,14 @@ function App() {
           }
         />
         <ChapterPlayLists
+          className="flex-grow overflow-y-auto mb-40 no-scrollbar"
           chapters={shakedChapters}
           onClick={handleChapterClick}
           playerTime={playerTime}
           nowPlayerPlaying={nowPlaying}
         />
         <Youtube
-          style={{ display: "none" }}
+          className="hidden"
           videoId={videoId}
           opts={playerOpts}
           onReady={onPlayerReady}

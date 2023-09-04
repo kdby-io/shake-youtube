@@ -9,15 +9,17 @@ type Props = {
   onClick: (moveTo: number, palying: boolean) => void;
   playerTime: number | undefined;
   nowPlayerPlaying: boolean;
+  className?: string;
 };
 export const ChapterPlayLists = ({
   chapters,
   onClick,
   playerTime,
   nowPlayerPlaying,
+  className,
 }: Props) => {
   return (
-    <div className="pt-12">
+    <div className={className}>
       <ul role="list" className="divide-y text-[#62656f]">
         {chapters.map((item, i) => {
           const playingChapter = playerTime
@@ -47,12 +49,14 @@ const ChapterPlayListItem = ({
   item: Chapter;
   nowPlayerPlaying: boolean;
   playingChapter: boolean;
-  onClick: () => void,
+  onClick: () => void;
 }) => {
-  const [hover, setHover] = useState(false)
+  const [hover, setHover] = useState(false);
   const iconSrc = hover
-    ? ((playingChapter && nowPlayerPlaying) ? pause_icon : play_icon)
-    : playing_icon
+    ? playingChapter && nowPlayerPlaying
+      ? pause_icon
+      : play_icon
+    : playing_icon;
 
   return (
     <li
