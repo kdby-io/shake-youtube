@@ -14,7 +14,7 @@ const playerOpts: YouTubeProps["opts"] = {
   width: "1280",
 };
 
-let timer: number;
+let timer: NodeJS.Timeout
 
 function App() {
   const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
