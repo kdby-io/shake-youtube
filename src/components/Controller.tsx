@@ -1,6 +1,9 @@
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import pause_icon from "../assets/pause_icon.png";
 import play_icon from "../assets/play_icon.png";
+import next_icon from "../assets/next.png";
+import prev_icon from "../assets/prev.png";
+import sound_icon from "../assets/sound.png";
 import { Chapter } from "../services/youtube";
 import playingIconData from "../assets/playing.json";
 import { useEffect, useRef } from "react";
@@ -53,10 +56,15 @@ export const Controller = ({
           />
           <div>{chapters[currentChapterIndex]?.title}</div>
         </div>
-        <div className="flex justify-center">
-          <button onClick={() => seekTo(chapters[lastChapterIndex].start)}>
-            전
-          </button>
+        <div className="flex items-center gap-6">
+          <div>
+            <img
+              className="cursor-pointer"
+              src={prev_icon}
+              alt="prev_icon"
+              onClick={() => seekTo(chapters[lastChapterIndex].start)}
+            ></img>
+          </div>
           <div
             className="w-14 h-14 rounded-full bg-[#FF003D] flex items-center justify-center cursor-pointer"
             onClick={nowPlaying ? () => onPauseClick() : () => onPlayClick()}
@@ -71,12 +79,23 @@ export const Controller = ({
               </div>
             )}
           </div>
-          <button onClick={() => seekTo(chapters[nextChapterIndex].start)}>
-            후
-          </button>
+          <div>
+            <img
+              className="cursor-pointer"
+              src={next_icon}
+              alt="next_icon"
+              onClick={() => seekTo(chapters[nextChapterIndex].start)}
+            ></img>
+          </div>
         </div>
         <div className="flex basis-1/3 justify-end items-center gap-3">
-          <div className="inline">icon</div>
+          <div>
+            <img
+              className="cursor-pointer"
+              src={sound_icon}
+              alt="sound_icon"
+            ></img>
+          </div>{" "}
           <Slider
             className="w-36"
             defaultValue={100}
