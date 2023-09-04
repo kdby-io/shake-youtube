@@ -4,6 +4,8 @@ import play_icon from "../assets/play_icon.png";
 import { Chapter } from "../services/youtube";
 import playingIconData from '../assets/playing.json'
 import { useEffect, useRef } from "react";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 type Props = {
   nowPlaying: boolean;
@@ -12,6 +14,7 @@ type Props = {
   chapters: Chapter[];
   playerTime: number;
   seekTo: (s: number) => void;
+  setVolume: (volume: number | any) => void;
 };
 export const Controller = ({
   nowPlaying,
@@ -20,6 +23,7 @@ export const Controller = ({
   chapters,
   playerTime,
   seekTo,
+  setVolume,
 }: Props) => {
   const currentChapterIndex = chapters.findIndex((item) => {
     return item.start <= playerTime && playerTime <= item.end;
@@ -73,7 +77,16 @@ export const Controller = ({
             후
           </button>
         </div>
-        <div className="flex basis-1/3 justify-end">볼륨</div>
+        <div className="flex basis-1/3 justify-end items-center gap-3">
+          <div className="inline">icon</div>
+          <Slider
+            className="w-36"
+            defaultValue={100}
+            trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
+            railStyle={{ backgroundColor: "#32373E", height: 6 }}
+            onChange={(value) => setVolume(value)}
+          />
+        </div>
       </div>
     </div>
   );

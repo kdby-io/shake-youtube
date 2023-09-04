@@ -105,6 +105,10 @@ function App() {
     player?.seekTo(s, true);
   };
 
+  const handleControllerVolume = (volume: number) => {
+    player?.setVolume(volume);
+  };
+
   return (
     <>
       <div className="max-w-screen-sm mx-auto my-0">
@@ -138,6 +142,7 @@ function App() {
         chapters={shakedChapters}
         playerTime={playerTime}
         seekTo={handleControllerButtonClick}
+        setVolume={handleControllerVolume}
       />
     </>
   );
