@@ -1,6 +1,8 @@
+import Lottie from "react-lottie";
 import pause_icon from "../assets/pause_icon.png";
 import play_icon from "../assets/play_icon.png";
 import { Chapter } from "../services/youtube";
+import playingIconData from '../assets/playing.json'
 
 type Props = {
   nowPlaying: boolean;
@@ -28,19 +30,31 @@ export const Controller = ({
 
   return (
     <div className="hidden">
-      <div className="controller flex items-center justify-between bg-controller-bg rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
-        <div className="chapter-info flex basis-1/3 gap-2">
-          <div className="playing-animation">애니메이션</div>
-          <div className="chapter-title">
+      <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-b-3xl px-14 py-7 fixed bottom-6 w-10/12">
+        <div className="flex basis-1/3 gap-2">
+          <Lottie
+            height={48}
+            width={48}
+            isPaused={!nowPlaying}
+            options={{
+              loop: true,
+              autoplay: false,
+              animationData: playingIconData,
+              rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+              }
+            }}
+          />
+          <div>
             {chapters[currentChapterIndex]?.title}
           </div>
         </div>
-        <div className="main-controller flex justify-center">
+        <div className="flex justify-center">
           <button onClick={() => seekTo(chapters[lastChapterIndex].start)}>
             전
           </button>
           <div
-            className="circle-button w-14 h-14 rounded-full bg-youtube-red flex items-center justify-center cursor-pointer"
+            className="w-14 h-14 rounded-full bg-[#FF003D] flex items-center justify-center cursor-pointer"
             onClick={nowPlaying ? () => onPauseClick() : () => onPlayClick()}
           >
             {nowPlaying ? (
@@ -57,7 +71,7 @@ export const Controller = ({
             후
           </button>
         </div>
-        <div className="volume flex basis-1/3 justify-end">볼륨</div>
+        <div className="flex basis-1/3 justify-end">볼륨</div>
       </div>
     </div>
   );

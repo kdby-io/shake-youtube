@@ -36,12 +36,11 @@ function App() {
   useEffect(() => {
     (async () => {
       const nextSecond = Math.ceil(playerTime);
-      const isAlmostEndChapter =
+      const doneChapter =
         startTimes.includes(nextSecond) &&
-        0 < nextSecond - playerTime &&
-        nextSecond - playerTime <= 0.2;
+        (0 < nextSecond - playerTime && nextSecond - playerTime <= 0.2)
 
-      if (isAlmostEndChapter) {
+      if (doneChapter) {
         const currentIndex = shakedChapters.findIndex(
           (chapter) => chapter.end === Math.ceil(playerTime)
         );
@@ -74,7 +73,7 @@ function App() {
       timer = setInterval(async () => {
         const time = (await player?.getCurrentTime()) ?? 0;
         setPlayerTime(time);
-      }, 200);
+      }, 100);
     } else if (newState === Youtube.PlayerState.PAUSED) {
       setNowPlaying(false);
       clearInterval(timer);
