@@ -46,7 +46,7 @@ export const Controller = ({
 
   return (
     <div className="">
-      <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-b-3xl px-14 py-7 fixed bottom-6 w-10/12">
+      <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
         <div className="flex basis-1/3 items-center gap-6">
           <Lottie
             className="h-12 w-12"
