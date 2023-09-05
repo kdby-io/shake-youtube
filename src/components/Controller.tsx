@@ -36,6 +36,7 @@ export const Controller = ({
   const lastChapterIndex =
     currentChapterIndex === 0 ? chapters.length - 1 : currentChapterIndex - 1;
 
+  const isChaptersEmpty: boolean = chapters.length === 0 ? true : false;
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   useEffect(() => {
@@ -48,13 +49,19 @@ export const Controller = ({
     <div className="">
       <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
         <div className="flex basis-1/3 items-center gap-6">
-          <Lottie
-            className="h-12 w-12"
-            lottieRef={lottieRef}
-            autoplay={false}
-            animationData={playingIconData}
-          />
-          <div>{chapters[currentChapterIndex]?.title}</div>
+          {isChaptersEmpty ? (
+            <div className="text-[#8A9397] opacity-70">재생 중인 음악 없음</div>
+          ) : (
+            <>
+              <Lottie
+                className="h-12 w-12"
+                lottieRef={lottieRef}
+                autoplay={false}
+                animationData={playingIconData}
+              />
+              <div>{chapters[currentChapterIndex]?.title}</div>
+            </>
+          )}
         </div>
         <div className="flex items-center gap-6 justify-center">
           <img
