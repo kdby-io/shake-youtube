@@ -8,6 +8,7 @@ import { ChapterPlayLists } from "./components/ChapterPlayLists";
 import { Title } from "./components/Title";
 import { shuffle } from "lodash";
 import { Controller } from "./components/Controller";
+import { NoChapters } from "./components/NoChapters";
 
 const playerOpts: YouTubeProps["opts"] = {
   height: "390",
@@ -32,6 +33,8 @@ function App() {
   useEffect(() => {
     setShakedChapters(shuffle(chapters));
   }, [chapters]);
+
+  const isChaptersExist: boolean = chapters.length !== 0 ? true : false;
 
   useEffect(() => {
     (async () => {
@@ -127,13 +130,21 @@ function App() {
               : videoForShake?.thumbnails.medium.url ?? ""
           }
         />
-        <ChapterPlayLists
-          className="flex-grow overflow-y-auto mb-40 no-scrollbar"
-          chapters={shakedChapters}
-          onClick={handleChapterClick}
-          playerTime={playerTime}
-          nowPlayerPlaying={nowPlaying}
-        />
+        {isChaptersExist ? (
+          <ChapterPlayLists
+            className="flex-grow overflow-y-auto mb-40 no-scrollbar"
+            chapters={shakedChapters}
+            onClick={handleChapterClick}
+            playerTime={playerTime}
+            nowPlayerPlaying={nowPlaying}
+          />
+        ) : (
+          <NoChapters
+            className="flex flex-col flex-grow mb-52 gap-5 justify-center"
+            videoId={videoId}
+          />
+        )}
+
         <Youtube
           className="hidden"
           videoId={videoId}
