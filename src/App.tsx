@@ -118,6 +118,10 @@ function App() {
     player?.setVolume(volume);
   };
 
+  const handleSoundIconClick = () => {
+    player?.isMuted() ? player?.unMute() : player?.mute();
+  };
+
   const handleKeyPress: (event: KeyboardEvent) => void = (
     event: KeyboardEvent
   ) => {
@@ -178,6 +182,8 @@ function App() {
         playerTime={playerTime}
         seekTo={handleControllerButtonClick}
         setVolume={handleControllerVolume}
+        handleSoundIconCLick={handleSoundIconClick}
+        isMuted={!!player?.isMuted()}
       />
     </>
   );

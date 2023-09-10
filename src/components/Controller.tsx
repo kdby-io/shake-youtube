@@ -18,6 +18,8 @@ type Props = {
   playerTime: number;
   seekTo: (s: number) => void;
   setVolume: (volume: number | any) => void;
+  handleSoundIconCLick: () => void;
+  isMuted: boolean | undefined;
 };
 export const Controller = ({
   nowPlaying,
@@ -27,6 +29,8 @@ export const Controller = ({
   playerTime,
   seekTo,
   setVolume,
+  handleSoundIconCLick,
+  isMuted,
 }: Props) => {
   const currentChapterIndex = chapters.findIndex((item) => {
     return item.start <= playerTime && playerTime <= item.end;
@@ -93,8 +97,10 @@ export const Controller = ({
               className="cursor-pointer"
               src={sound_icon}
               alt="sound_icon"
+              onClick={() => handleSoundIconCLick()}
             ></img>
-          </div>{" "}
+          </div>
+
           <Slider
             className="w-36"
             defaultValue={100}
