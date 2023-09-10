@@ -118,6 +118,26 @@ function App() {
     player?.setVolume(volume);
   };
 
+  const handleKeyPress: (event: KeyboardEvent) => void = (
+    event: KeyboardEvent
+  ) => {
+    if (
+      event.key === " " ||
+      event.keyCode === 32 ||
+      event.code === "Space" ||
+      event.key === "Spacebar"
+    ) {
+      event.preventDefault();
+      if (nowPlaying) {
+        player?.pauseVideo();
+      } else if (!nowPlaying) {
+        player?.playVideo();
+      }
+    }
+  };
+
+  window.addEventListener("keydown", handleKeyPress);
+
   return (
     <>
       <div className="max-w-screen-sm mx-auto my-0 flex flex-col gap-12 pt-8 px-8 h-screen">
