@@ -128,11 +128,7 @@ function App() {
       event.key === "Spacebar"
     ) {
       event.preventDefault();
-      if (nowPlaying) {
-        player?.pauseVideo();
-      } else if (!nowPlaying) {
-        player?.playVideo();
-      }
+      nowPlaying ? player?.pauseVideo() : player?.playVideo();
     }
   };
 
