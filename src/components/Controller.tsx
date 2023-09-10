@@ -30,8 +30,8 @@ export const Controller = ({
   seekTo,
   setVolume,
   handleSoundIconCLick,
-  isMuted,
-}: Props) => {
+}: // isMuted,
+Props) => {
   const currentChapterIndex = chapters.findIndex((item) => {
     return item.start <= playerTime && playerTime <= item.end;
   });
