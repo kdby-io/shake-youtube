@@ -6,7 +6,7 @@ import prev_icon from "../assets/prev.png";
 // import sound_icon from "../assets/sound.png";
 import { Chapter } from "../services/youtube";
 import playingIconData from "../assets/playing.json";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { BiVolumeFull, BiVolumeMute } from "react-icons/bi";
@@ -19,6 +19,7 @@ type Props = {
   playerTime: number;
   seekTo: (s: number) => void;
   setVolume: (volume: number | any) => void;
+  volume: number|Promise<number>
   handleSoundIconCLick: () => void;
   isMuted: boolean | undefined;
 };
@@ -30,10 +31,11 @@ export const Controller = ({
   playerTime,
   seekTo,
   setVolume,
+  volume,
   handleSoundIconCLick,
   isMuted,
 }: Props) => {
-  const [vol, setVol] = useState<number | any>(100);
+  // console.log(isMuted)
   const currentChapterIndex = chapters.findIndex((item) => {
     return item.start <= playerTime && playerTime <= item.end;
   });
@@ -114,29 +116,16 @@ export const Controller = ({
             )}
           </div>
 
-          {isMuted ? (
-            <Slider
-              className="w-36"
-              value={0}
-              trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
-              railStyle={{ backgroundColor: "#32373E", height: 6 }}
-              onChange={(value) => {
-                setVolume(value);
-              }}
-            />
-          ) : (
-            <Slider
-              className="w-36"
-              defaultValue={100}
-              value={vol}
-              trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
-              railStyle={{ backgroundColor: "#32373E", height: 6 }}
-              onChange={(value) => {
-                setVolume(value);
-                setVol(value);
-              }}
-            />
-          )}
+          <Slider
+            className="w-36"
+            defaultValue={100}
+            value={isMuted ? 0 : volume as number}
+            trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
+            railStyle={{ backgroundColor: "#32373E", height: 6 }}
+            onChange={(value) => {
+              setVolume(value);
+            }}
+          />
         </div>
       </div>
     </div>

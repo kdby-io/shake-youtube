@@ -187,6 +187,7 @@ function App() {
         playerTime={playerTime}
         seekTo={handleControllerButtonClick}
         setVolume={handleControllerVolume}
+        volume={player?.getVolume() ?? 100}
         handleSoundIconCLick={handleSoundIconClick}
         isMuted={!!player?.isMuted()}
       />
