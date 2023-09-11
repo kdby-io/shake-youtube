@@ -21,11 +21,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  test-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
