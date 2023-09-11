@@ -116,6 +116,11 @@ function App() {
 
   const handleControllerVolume = (volume: number) => {
     player?.setVolume(volume);
+    if (volume === 0) {
+      player?.mute();
+    } else {
+      player?.unMute();
+    }
   };
 
   const handleSoundIconClick = () => {

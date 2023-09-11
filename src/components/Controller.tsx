@@ -3,12 +3,13 @@ import pause_icon from "../assets/pause_icon.png";
 import play_icon from "../assets/play_icon.png";
 import next_icon from "../assets/next.png";
 import prev_icon from "../assets/prev.png";
-import sound_icon from "../assets/sound.png";
+// import sound_icon from "../assets/sound.png";
 import { Chapter } from "../services/youtube";
 import playingIconData from "../assets/playing.json";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { BiVolumeFull, BiVolumeMute } from "react-icons/bi";
 
 type Props = {
   nowPlaying: boolean;
@@ -30,8 +31,9 @@ export const Controller = ({
   seekTo,
   setVolume,
   handleSoundIconCLick,
-}: // isMuted,
-Props) => {
+  isMuted,
+}: Props) => {
+  const [vol, setVol] = useState<number | any>(100);
   const currentChapterIndex = chapters.findIndex((item) => {
     return item.start <= playerTime && playerTime <= item.end;
   });
@@ -93,21 +95,48 @@ Props) => {
         </div>
         <div className="flex basis-1/3 justify-end items-center gap-3">
           <div>
-            <img
+            {/* <img
               className="cursor-pointer"
               src={sound_icon}
               alt="sound_icon"
               onClick={() => handleSoundIconCLick()}
-            ></img>
+            ></img> */}
+            {isMuted ? (
+              <BiVolumeMute
+                className="cursor-pointer w-6 h-6"
+                onClick={() => handleSoundIconCLick()}
+              />
+            ) : (
+              <BiVolumeFull
+                className="cursor-pointer w-6 h-6"
+                onClick={() => handleSoundIconCLick()}
+              />
+            )}
           </div>
 
-          <Slider
-            className="w-36"
-            defaultValue={100}
-            trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
-            railStyle={{ backgroundColor: "#32373E", height: 6 }}
-            onChange={(value) => setVolume(value)}
-          />
+          {isMuted ? (
+            <Slider
+              className="w-36"
+              value={0}
+              trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
+              railStyle={{ backgroundColor: "#32373E", height: 6 }}
+              onChange={(value) => {
+                setVolume(value);
+              }}
+            />
+          ) : (
+            <Slider
+              className="w-36"
+              defaultValue={100}
+              value={vol}
+              trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
+              railStyle={{ backgroundColor: "#32373E", height: 6 }}
+              onChange={(value) => {
+                setVolume(value);
+                setVol(value);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
