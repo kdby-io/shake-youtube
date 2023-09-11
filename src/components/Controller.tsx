@@ -13,29 +13,30 @@ import { BiVolumeFull, BiVolumeMute } from "react-icons/bi";
 
 type Props = {
   nowPlaying: boolean;
-  onPlayClick: () => void;
-  onPauseClick: () => void;
+  onPlay: () => void;
+  onPause: () => void;
   chapters: Chapter[];
   playerTime: number;
   seekTo: (s: number) => void;
-  setVolume: (volume: number | any) => void;
-  volume: number|Promise<number>
-  handleSoundIconCLick: () => void;
-  isMuted: boolean | undefined;
+  setVolume: (volume: number) => void;
+  volume: number
+  onMute: () => void
+  onUnmute: () => void
+  muted: boolean
 };
 export const Controller = ({
   nowPlaying,
-  onPlayClick,
-  onPauseClick,
+  onPlay,
+  onPause,
   chapters,
   playerTime,
   seekTo,
   setVolume,
   volume,
-  handleSoundIconCLick,
-  isMuted,
+  onMute,
+  onUnmute,
+  muted,
 }: Props) => {
-  // console.log(isMuted)
   const currentChapterIndex = chapters.findIndex((item) => {
     return item.start <= playerTime && playerTime <= item.end;
   });
@@ -77,15 +78,15 @@ export const Controller = ({
             src={prev_icon}
             alt="prev_icon"
             onClick={() => seekTo(chapters[lastChapterIndex].start)}
-          ></img>
+          />
           <div
             className="w-14 h-14 rounded-full bg-[#FF003D] flex items-center justify-center cursor-pointer"
-            onClick={nowPlaying ? () => onPauseClick() : () => onPlayClick()}
+            onClick={nowPlaying ? () => onPause() : () => onPlay()}
           >
             {nowPlaying ? (
-              <img src={pause_icon} alt="pause_icon"></img>
+              <img src={pause_icon} alt="pause_icon"/>
             ) : (
-              <img src={play_icon} alt="play_icon"></img>
+              <img src={play_icon} alt="play_icon"/>
             )}
           </div>
           <img
@@ -93,7 +94,7 @@ export const Controller = ({
             src={next_icon}
             alt="next_icon"
             onClick={() => seekTo(chapters[nextChapterIndex].start)}
-          ></img>
+          />
         </div>
         <div className="flex basis-1/3 justify-end items-center gap-3">
           <div>
@@ -103,15 +104,15 @@ export const Controller = ({
               alt="sound_icon"
               onClick={() => handleSoundIconCLick()}
             ></img> */}
-            {isMuted ? (
+            {muted ? (
               <BiVolumeMute
                 className="cursor-pointer w-6 h-6"
-                onClick={() => handleSoundIconCLick()}
+                onClick={onUnmute}
               />
             ) : (
               <BiVolumeFull
                 className="cursor-pointer w-6 h-6"
-                onClick={() => handleSoundIconCLick()}
+                onClick={onMute}
               />
             )}
           </div>
@@ -119,12 +120,10 @@ export const Controller = ({
           <Slider
             className="w-36"
             defaultValue={100}
-            value={isMuted ? 0 : volume as number}
+            value={muted ? 0 : volume}
             trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
             railStyle={{ backgroundColor: "#32373E", height: 6 }}
-            onChange={(value) => {
-              setVolume(value);
-            }}
+            onChange={volume => setVolume(volume as number)}
           />
         </div>
       </div>

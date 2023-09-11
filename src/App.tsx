@@ -26,9 +26,12 @@ function App() {
   );
   const [shakedChapters, setShakedChapters] = useState(chapters);
   const startTimes = chapters.map((chapter) => chapter.start);
+
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
   const [nowPlaying, setNowPlaying] = useState<boolean>(false);
   const [playerTime, setPlayerTime] = useState<number>(-10);
+  const [muted, setMuted] = useState<boolean>(false);
+  const [volume, setVolume] = useState<number>(100);
 
   useEffect(() => {
     setShakedChapters(shuffle(chapters));
@@ -55,6 +58,14 @@ function App() {
       }
     })();
   }, [playerTime]);
+
+  useEffect(() => {
+    muted ? player?.mute() : player?.unMute()
+  }, [muted])
+
+  useEffect(() => {
+    player?.setVolume(volume)
+  }, [volume])
 
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
     setPlayer(event.target);
@@ -114,19 +125,6 @@ function App() {
     }
   };
 
-  const handleControllerVolume = (volume: number) => {
-    player?.setVolume(volume);
-    if (volume === 0) {
-      player?.mute();
-    } else {
-      player?.unMute();
-    }
-  };
-
-  const handleSoundIconClick = () => {
-    player?.isMuted() ? player?.unMute() : player?.mute();
-  };
-
   const handleKeyPress: (event: KeyboardEvent) => void = (
     event: KeyboardEvent
   ) => {
@@ -181,15 +179,16 @@ function App() {
 
       <Controller
         nowPlaying={nowPlaying}
-        onPlayClick={handlePlayButtonClick}
-        onPauseClick={handlePauseButtonClick}
+        onPlay={handlePlayButtonClick}
+        onPause={handlePauseButtonClick}
         chapters={shakedChapters}
         playerTime={playerTime}
         seekTo={handleControllerButtonClick}
-        setVolume={handleControllerVolume}
-        volume={player?.getVolume() ?? 100}
-        handleSoundIconCLick={handleSoundIconClick}
-        isMuted={!!player?.isMuted()}
+        setVolume={setVolume}
+        volume={volume}
+        onMute={() => setMuted(true)}
+        onUnmute={() => setMuted(false)}
+        muted={muted}
       />
     </>
   );
