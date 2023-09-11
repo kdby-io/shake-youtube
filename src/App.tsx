@@ -184,7 +184,10 @@ function App() {
         chapters={shakedChapters}
         playerTime={playerTime}
         seekTo={handleControllerButtonClick}
-        setVolume={setVolume}
+        setVolume={volume => {
+          setVolume(volume)
+          volume !== 0 && setMuted(false)
+        }}
         volume={volume}
         onMute={() => setMuted(true)}
         onUnmute={() => setMuted(false)}
