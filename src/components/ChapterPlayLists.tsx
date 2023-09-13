@@ -74,7 +74,7 @@ const ChapterPlayListItem = ({
       onMouseLeave={() => setHover(false)}
       onClick={onClick}
     >
-      <span>
+      <span className="whitespace-nowrap overflow-hidden text-ellipsis">
         {(hover || playingChapter) && (
           <img
             src={iconSrc}
