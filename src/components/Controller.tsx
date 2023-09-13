@@ -19,10 +19,10 @@ type Props = {
   playerTime: number;
   seekTo: (s: number) => void;
   setVolume: (volume: number) => void;
-  volume: number
-  onMute: () => void
-  onUnmute: () => void
-  muted: boolean
+  volume: number;
+  onMute: () => void;
+  onUnmute: () => void;
+  muted: boolean;
 };
 export const Controller = ({
   nowPlaying,
@@ -57,16 +57,18 @@ export const Controller = ({
   return (
     <div className="">
       <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
-        <div className="flex basis-1/3 items-center gap-6">
+        <div className="flex basis-1/3 items-center gap-6 min-w-0">
           {isChaptersExist ? (
             <>
               <Lottie
-                className="h-12 w-12"
+                className="h-12 w-12 flex-shrink-0"
                 lottieRef={lottieRef}
                 autoplay={false}
                 animationData={playingIconData}
               />
-              <div>{chapters[currentChapterIndex]?.title}</div>
+              <div className="min-w-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                {chapters[currentChapterIndex]?.title}
+              </div>
             </>
           ) : (
             <div className="text-[#8A9397] opacity-70">재생 중인 음악 없음</div>
@@ -84,9 +86,9 @@ export const Controller = ({
             onClick={nowPlaying ? () => onPause() : () => onPlay()}
           >
             {nowPlaying ? (
-              <img src={pause_icon} alt="pause_icon"/>
+              <img src={pause_icon} alt="pause_icon" />
             ) : (
-              <img src={play_icon} alt="play_icon"/>
+              <img src={play_icon} alt="play_icon" />
             )}
           </div>
           <img
@@ -123,7 +125,7 @@ export const Controller = ({
             value={muted ? 0 : volume}
             trackStyle={{ backgroundColor: "#FF003D", height: 6 }}
             railStyle={{ backgroundColor: "#32373E", height: 6 }}
-            onChange={volume => setVolume(volume as number)}
+            onChange={(volume) => setVolume(volume as number)}
           />
         </div>
       </div>
