@@ -12,7 +12,9 @@ export const Title = ({ title, thumbnailImage, className }: Props) => {
           className="w-40 h-22 flex-none object-cover rounded-md"
         />
         <div className="flex items-center">
-          <h1 className="text-2xl font-sans font-bold text-left">{title}</h1>
+          <h1 className="text-2xl font-sans font-bold text-left overflow-hidden text-ellipsis	title-text">
+            {title}
+          </h1>
         </div>
       </div>
     </div>
