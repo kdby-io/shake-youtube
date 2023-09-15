@@ -33,6 +33,11 @@ function App() {
   const [muted, setMuted] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(100);
 
+  const currentChapterIndex = shakedChapters.findIndex(
+    (chapter) => chapter.start <= playerTime && playerTime <= chapter.end
+  )
+  const currentChapter = shakedChapters.at(currentChapterIndex)
+
   useEffect(() => {
     setShakedChapters(shuffle(chapters));
   }, [chapters]);
@@ -116,13 +121,18 @@ function App() {
     player?.pauseVideo();
   };
 
-  const handleControllerButtonClick = (s: number) => {
-    if (nowPlaying) {
-      player?.seekTo(s, true);
-    } else if (!nowPlaying) {
-      player?.seekTo(s, true);
-      player?.playVideo();
-    }
+  const movePrev = () => {
+    const isCurrentIndexFirst = currentChapterIndex === 0;
+    const prevIndex = isCurrentIndexFirst ? shakedChapters.length - 1 : currentChapterIndex - 1;
+    const prevChapter = shakedChapters[prevIndex];
+    player?.seekTo(prevChapter.start, true);
+  };
+
+  const moveNext = () => {
+    const isCurrentIndexLast = currentChapterIndex === shakedChapters.length - 1;
+    const nextIndex = isCurrentIndexLast ? 0 : currentChapterIndex + 1;
+    const nextChapter = shakedChapters[nextIndex];
+    player?.seekTo(nextChapter.start, true);
   };
 
   const handleKeyPress: (event: KeyboardEvent) => void = (
@@ -181,9 +191,9 @@ function App() {
         nowPlaying={nowPlaying}
         onPlay={handlePlayButtonClick}
         onPause={handlePauseButtonClick}
-        chapters={shakedChapters}
-        playerTime={playerTime}
-        seekTo={handleControllerButtonClick}
+        onMovePrev={movePrev}
+        onMoveNext={moveNext}
+        currentChapter={currentChapter}
         setVolume={volume => {
           setVolume(volume)
           volume !== 0 && setMuted(false)

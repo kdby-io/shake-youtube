@@ -3,7 +3,6 @@ import pause_icon from "../assets/pause_icon.png";
 import play_icon from "../assets/play_icon.png";
 import next_icon from "../assets/next.png";
 import prev_icon from "../assets/prev.png";
-// import sound_icon from "../assets/sound.png";
 import { Chapter } from "../services/youtube";
 import playingIconData from "../assets/playing.json";
 import { useEffect, useRef } from "react";
@@ -15,9 +14,9 @@ type Props = {
   nowPlaying: boolean;
   onPlay: () => void;
   onPause: () => void;
-  chapters: Chapter[];
-  playerTime: number;
-  seekTo: (s: number) => void;
+  onMovePrev: () => void;
+  onMoveNext: () => void;
+  currentChapter: Chapter|undefined;
   setVolume: (volume: number) => void;
   volume: number;
   onMute: () => void;
@@ -28,24 +27,15 @@ export const Controller = ({
   nowPlaying,
   onPlay,
   onPause,
-  chapters,
-  playerTime,
-  seekTo,
+  onMovePrev,
+  onMoveNext,
+  currentChapter,
   setVolume,
   volume,
   onMute,
   onUnmute,
   muted,
 }: Props) => {
-  const currentChapterIndex = chapters.findIndex((item) => {
-    return item.start <= playerTime && playerTime <= item.end;
-  });
-  const nextChapterIndex =
-    currentChapterIndex === chapters.length - 1 ? 0 : currentChapterIndex + 1;
-  const lastChapterIndex =
-    currentChapterIndex === 0 ? chapters.length - 1 : currentChapterIndex - 1;
-
-  const isChaptersExist: boolean = chapters.length !== 0 ? true : false;
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   useEffect(() => {
@@ -58,7 +48,7 @@ export const Controller = ({
     <div className="">
       <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
         <div className="flex basis-1/3 items-center gap-6 min-w-0">
-          {isChaptersExist ? (
+          {currentChapter ? (
             <>
               <Lottie
                 className="h-12 w-12 flex-shrink-0"
@@ -67,11 +57,11 @@ export const Controller = ({
                 animationData={playingIconData}
               />
               <div className="min-w-0 whitespace-nowrap overflow-hidden text-ellipsis">
-                {chapters[currentChapterIndex]?.title}
+                {currentChapter.title}
               </div>
             </>
           ) : (
-            <div className="text-[#8A9397] opacity-70">재생 중인 음악 없음</div>
+            <div className="text-[#8A9397] opacity-70">재생 가능한 음악 없음</div>
           )}
         </div>
         <div className="flex items-center gap-6 justify-center">
@@ -79,7 +69,7 @@ export const Controller = ({
             className="cursor-pointer"
             src={prev_icon}
             alt="prev_icon"
-            onClick={() => seekTo(chapters[lastChapterIndex].start)}
+            onClick={onMovePrev}
           />
           <div
             className="w-14 h-14 rounded-full bg-[#FF003D] flex items-center justify-center cursor-pointer"
@@ -95,7 +85,7 @@ export const Controller = ({
             className="cursor-pointer"
             src={next_icon}
             alt="next_icon"
-            onClick={() => seekTo(chapters[nextChapterIndex].start)}
+            onClick={onMoveNext}
           />
         </div>
         <div className="flex basis-1/3 justify-end items-center gap-3">
