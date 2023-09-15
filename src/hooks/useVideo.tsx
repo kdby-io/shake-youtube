@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import parseYouTubeChapters from "../utils/parseYouTubeChapters";
 import { Chapter, getVideo } from "../services/youtube";
 import { useSearchParams } from "./useSearchParams";
