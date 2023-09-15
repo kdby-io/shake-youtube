@@ -1,12 +1,9 @@
 import "./App.css";
 import Youtube, { YouTubeProps, YouTubePlayer } from "react-youtube";
-import { useVideoInfo } from "./hooks/useVideoInfo";
-import { useChapters } from "./hooks/useChapters";
-import { useSearchParams } from "./hooks/useSearchParams";
+import { useVideo } from "./hooks/useVideo";
 import { useEffect, useState } from "react";
 import { ChapterPlayLists } from "./components/ChapterPlayLists";
 import { Title } from "./components/Title";
-import { shuffle } from "lodash";
 import { Controller } from "./components/Controller";
 import { NoChapters } from "./components/NoChapters";
 
@@ -18,13 +15,7 @@ const playerOpts: YouTubeProps["opts"] = {
 let timer: NodeJS.Timeout;
 
 function App() {
-  const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
-  const videoForShake = useVideoInfo(videoId);
-  const chapters = useChapters(
-    videoForShake?.description ?? "",
-    videoForShake?.comments ?? []
-  );
-  const [shakedChapters, setShakedChapters] = useState(chapters);
+  const { videoId, title, imageUrl, chapters } = useVideo()
   const startTimes = chapters.map((chapter) => chapter.start);
 
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
@@ -33,14 +24,10 @@ function App() {
   const [muted, setMuted] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(100);
 
-  const currentChapterIndex = shakedChapters.findIndex(
+  const currentChapterIndex = chapters.findIndex(
     (chapter) => chapter.start <= playerTime && playerTime <= chapter.end
   )
-  const currentChapter = shakedChapters.at(currentChapterIndex)
-
-  useEffect(() => {
-    setShakedChapters(shuffle(chapters));
-  }, [chapters]);
+  const currentChapter = chapters.at(currentChapterIndex)
 
   const isChaptersExist: boolean = chapters.length !== 0 ? true : false;
 
@@ -53,12 +40,12 @@ function App() {
         nextSecond - playerTime <= 0.2;
 
       if (doneChapter) {
-        const currentIndex = shakedChapters.findIndex(
+        const currentIndex = chapters.findIndex(
           (chapter) => chapter.end === Math.ceil(playerTime)
         );
-        const isCurrentIndexLast = currentIndex === shakedChapters.length - 1;
+        const isCurrentIndexLast = currentIndex === chapters.length - 1;
         const nextIndex = isCurrentIndexLast ? 0 : currentIndex + 1;
-        const nextChapter = shakedChapters[nextIndex];
+        const nextChapter = chapters[nextIndex];
         player?.seekTo(nextChapter.start, true);
       }
     })();
@@ -81,12 +68,12 @@ function App() {
 
     if (newState === Youtube.PlayerState.ENDED) {
       clearInterval(timer);
-      const currentIndex = shakedChapters.findIndex(
+      const currentIndex = chapters.findIndex(
         (chapter) => chapter.end === Infinity
       );
-      const isCurrentIndexLast = currentIndex === shakedChapters.length - 1;
+      const isCurrentIndexLast = currentIndex === chapters.length - 1;
       const nextIndex = isCurrentIndexLast ? 0 : currentIndex + 1;
-      const nextChapter = shakedChapters[nextIndex];
+      const nextChapter = chapters[nextIndex];
       player?.seekTo(nextChapter.start, true);
     } else if (newState === Youtube.PlayerState.PLAYING) {
       setNowPlaying(true);
@@ -116,15 +103,15 @@ function App() {
 
   const movePrev = () => {
     const isCurrentIndexFirst = currentChapterIndex === 0;
-    const prevIndex = isCurrentIndexFirst ? shakedChapters.length - 1 : currentChapterIndex - 1;
-    const prevChapter = shakedChapters[prevIndex];
+    const prevIndex = isCurrentIndexFirst ? chapters.length - 1 : currentChapterIndex - 1;
+    const prevChapter = chapters[prevIndex];
     player?.seekTo(prevChapter.start, true);
   };
 
   const moveNext = () => {
-    const isCurrentIndexLast = currentChapterIndex === shakedChapters.length - 1;
+    const isCurrentIndexLast = currentChapterIndex === chapters.length - 1;
     const nextIndex = isCurrentIndexLast ? 0 : currentChapterIndex + 1;
-    const nextChapter = shakedChapters[nextIndex];
+    const nextChapter = chapters[nextIndex];
     player?.seekTo(nextChapter.start, true);
   };
 
@@ -149,17 +136,13 @@ function App() {
       <div className="max-w-screen-sm mx-auto my-0 flex flex-col gap-12 pt-8 px-8 h-screen">
         <Title
           className="flex-shrink-0"
-          title={videoForShake?.title ?? ""}
-          thumbnailImage={
-            videoForShake?.thumbnails.maxres
-              ? videoForShake?.thumbnails.maxres.url ?? ""
-              : videoForShake?.thumbnails.medium.url ?? ""
-          }
+          title={title}
+          thumbnailImage={imageUrl}
         />
         {isChaptersExist ? (
           <ChapterPlayLists
             className="flex-grow overflow-y-auto mb-40 no-scrollbar"
-            chapters={shakedChapters}
+            chapters={chapters}
             onClick={handleChapterClick}
             currentChapter={currentChapter}
             nowPlayerPlaying={nowPlaying}

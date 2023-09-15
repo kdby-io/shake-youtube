@@ -48,38 +48,34 @@ export type Comment = {
   publishedAt: string;
 };
 
-export const video = async (videoId: string) => {
-  try {
-    const videoResponse = await YoutubeApiClient.get<VideoListResponse>(
-      "videos",
-      {
-        params: {
-          part: "snippet",
-          id: videoId,
-        },
-      }
-    );
-
-    const commentResponse = await YoutubeApiClient.get<any>("commentThreads", {
+export const getVideo = async (videoId: string) => {
+  const videoResponse = await YoutubeApiClient.get<VideoListResponse>(
+    "videos",
+    {
       params: {
         part: "snippet",
-        videoId: videoId,
-        textFormat: "plainText",
-        order: "relevance",
+        id: videoId,
       },
-    });
+    }
+  );
 
-    const comments: any[] = commentResponse.data.items.map((item: any) => {
-      let comment = item.snippet.topLevelComment.snippet.textOriginal;
-      comment = comment.replace(/\r/g, "");
-      return comment;
-    });
+  const commentResponse = await YoutubeApiClient.get<any>("commentThreads", {
+    params: {
+      part: "snippet",
+      videoId: videoId,
+      textFormat: "plainText",
+      order: "relevance",
+    },
+  });
 
-    const response: any = videoResponse.data.items[0].snippet;
-    response.comments = comments;
+  const comments: string[] = commentResponse.data.items.map((item: any) => {
+    let comment = item.snippet.topLevelComment.snippet.textOriginal;
+    comment = comment.replace(/\r/g, "");
+    return comment;
+  });
 
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
+  const response = videoResponse.data.items[0].snippet;
+  response.comments = comments;
+
+  return response;
 };
