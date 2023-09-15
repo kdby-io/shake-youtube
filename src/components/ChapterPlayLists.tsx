@@ -6,15 +6,15 @@ import { useState } from "react";
 
 type Props = {
   chapters: Chapter[];
-  onClick: (moveTo: number, palying: boolean) => void;
-  playerTime: number | undefined;
+  onClick: (moveTo: number, playing: boolean) => void;
+  currentChapter: Chapter | undefined;
   nowPlayerPlaying: boolean;
   className?: string;
 };
 export const ChapterPlayLists = ({
   chapters,
   onClick,
-  playerTime,
+  currentChapter,
   nowPlayerPlaying,
   className,
 }: Props) => {
@@ -22,15 +22,14 @@ export const ChapterPlayLists = ({
     <div className={className}>
       <ul role="list" className="divide-y text-[#62656f]">
         {chapters.map((item, i) => {
-          const playingChapter = playerTime
-            ? item.start <= playerTime && playerTime <= item.end
-            : false;
+          const isCurrentChapter = item.start === currentChapter?.start;
+
           return (
             <ChapterPlayListItem
               key={i}
               item={item}
-              onClick={() => onClick(item.start, playingChapter)}
-              playingChapter={playingChapter}
+              onClick={() => onClick(item.start, isCurrentChapter)}
+              isCurrentChapter={isCurrentChapter}
               nowPlayerPlaying={nowPlayerPlaying}
             />
           );
@@ -43,17 +42,17 @@ export const ChapterPlayLists = ({
 const ChapterPlayListItem = ({
   item,
   nowPlayerPlaying,
-  playingChapter,
+  isCurrentChapter,
   onClick,
 }: {
   item: Chapter;
   nowPlayerPlaying: boolean;
-  playingChapter: boolean;
+  isCurrentChapter: boolean;
   onClick: () => void;
 }) => {
   const [hover, setHover] = useState(false);
   const iconSrc = hover
-    ? playingChapter && nowPlayerPlaying
+    ? isCurrentChapter && nowPlayerPlaying
       ? pause_icon
       : play_icon
     : playing_icon;
@@ -68,17 +67,17 @@ const ChapterPlayListItem = ({
         border-[#212121]
         border-t
         hover:bg-[#17191d]
-        ${playingChapter ? "text-white" : "text-[#62656f]"}
+        ${isCurrentChapter ? "text-white" : "text-[#62656f]"}
       `}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={onClick}
     >
       <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-        {(hover || playingChapter) && (
+        {(hover || isCurrentChapter) && (
           <img
             src={iconSrc}
-            className={`pr-4 inline ${playingChapter ? "" : "opacity-40"}`}
+            className={`pr-4 inline ${isCurrentChapter ? "" : "opacity-40"}`}
           />
         )}
         {item.title}

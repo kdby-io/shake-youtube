@@ -102,24 +102,17 @@ function App() {
     }
   };
 
-  const handleChapterClick = (s: number, playing: boolean) => {
-    if (nowPlaying && playing) {
-      player?.pauseVideo();
-    } else if (!nowPlaying && playing) {
-      player?.playVideo();
-    } else {
+  const handleChapterClick = (s: number, isCurrentChapter: boolean) => {
+    if (!nowPlaying && !isCurrentChapter) {
       player?.seekTo(s, true);
-      player?.playVideo();
+      play()
     }
+
+    isCurrentChapter ? pause() : play()
   };
 
-  const handlePlayButtonClick = () => {
-    player?.playVideo();
-  };
-
-  const handlePauseButtonClick = () => {
-    player?.pauseVideo();
-  };
+  const play = () => player?.playVideo();
+  const pause = () => player?.pauseVideo();
 
   const movePrev = () => {
     const isCurrentIndexFirst = currentChapterIndex === 0;
@@ -145,7 +138,7 @@ function App() {
       event.key === "Spacebar"
     ) {
       event.preventDefault();
-      nowPlaying ? player?.pauseVideo() : player?.playVideo();
+      nowPlaying ? pause() : play()
     }
   };
 
@@ -168,7 +161,7 @@ function App() {
             className="flex-grow overflow-y-auto mb-40 no-scrollbar"
             chapters={shakedChapters}
             onClick={handleChapterClick}
-            playerTime={playerTime}
+            currentChapter={currentChapter}
             nowPlayerPlaying={nowPlaying}
           />
         ) : (
@@ -189,8 +182,8 @@ function App() {
 
       <Controller
         nowPlaying={nowPlaying}
-        onPlay={handlePlayButtonClick}
-        onPause={handlePauseButtonClick}
+        onPlay={play}
+        onPause={pause}
         onMovePrev={movePrev}
         onMoveNext={moveNext}
         currentChapter={currentChapter}
