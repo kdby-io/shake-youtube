@@ -9,6 +9,7 @@ export const useVideo = () => {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [isVideoReady, SetIsVidoesReady] = useState(false);
 
   const shuffle = () => {
     setChapters(_shuffle(chapters));
@@ -31,8 +32,10 @@ export const useVideo = () => {
         const chaptersInfo = parseYouTubeChapters(chapterText);
         if (chaptersInfo.length >= 3) {
           setChapters(_shuffle(chaptersInfo));
+          SetIsVidoesReady(true);
           return;
         }
+        SetIsVidoesReady(true);
       }
     })();
   }, [videoId]);
@@ -43,5 +46,6 @@ export const useVideo = () => {
     imageUrl,
     chapters,
     shuffle,
+    isVideoReady,
   };
 };

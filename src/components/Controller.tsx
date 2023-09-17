@@ -16,12 +16,13 @@ type Props = {
   onPause: () => void;
   onMovePrev: () => void;
   onMoveNext: () => void;
-  currentChapter: Chapter|undefined;
+  currentChapter: Chapter | undefined;
   setVolume: (volume: number) => void;
   volume: number;
   onMute: () => void;
   onUnmute: () => void;
   muted: boolean;
+  isVideoReady: boolean;
 };
 export const Controller = ({
   nowPlaying,
@@ -35,6 +36,7 @@ export const Controller = ({
   onMute,
   onUnmute,
   muted,
+  isVideoReady,
 }: Props) => {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
@@ -48,20 +50,26 @@ export const Controller = ({
     <div className="">
       <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
         <div className="flex basis-1/3 items-center gap-6 min-w-0">
-          {currentChapter ? (
-            <>
-              <Lottie
-                className="h-12 w-12 flex-shrink-0"
-                lottieRef={lottieRef}
-                autoplay={false}
-                animationData={playingIconData}
-              />
-              <div className="min-w-0 whitespace-nowrap overflow-hidden text-ellipsis">
-                {currentChapter.title}
+          {isVideoReady ? (
+            currentChapter ? (
+              <>
+                <Lottie
+                  className="h-12 w-12 flex-shrink-0"
+                  lottieRef={lottieRef}
+                  autoplay={false}
+                  animationData={playingIconData}
+                />
+                <div className="min-w-0 whitespace-nowrap overflow-hidden text-ellipsis">
+                  {currentChapter.title}
+                </div>
+              </>
+            ) : (
+              <div className="text-[#8A9397] opacity-70">
+                재생 가능한 음악 없음
               </div>
-            </>
+            )
           ) : (
-            <div className="text-[#8A9397] opacity-70">재생 가능한 음악 없음</div>
+            <div>Loading...</div>
           )}
         </div>
         <div className="flex items-center gap-6 justify-center">

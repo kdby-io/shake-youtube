@@ -15,7 +15,7 @@ const playerOpts: YouTubeProps["opts"] = {
 let timer: NodeJS.Timeout;
 
 function App() {
-  const { videoId, title, imageUrl, chapters } = useVideo();
+  const { videoId, title, imageUrl, chapters, isVideoReady } = useVideo();
   const startTimes = chapters.map((chapter) => chapter.start);
 
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
@@ -141,19 +141,23 @@ function App() {
           title={title}
           thumbnailImage={imageUrl}
         />
-        {isChaptersExist ? (
-          <ChapterPlayLists
-            className="flex-grow overflow-y-auto mb-40 no-scrollbar"
-            chapters={chapters}
-            onClick={handleChapterClick}
-            currentChapter={currentChapter}
-            nowPlayerPlaying={nowPlaying}
-          />
+        {isVideoReady ? (
+          isChaptersExist ? (
+            <ChapterPlayLists
+              className="flex-grow overflow-y-auto mb-40 no-scrollbar"
+              chapters={chapters}
+              onClick={handleChapterClick}
+              currentChapter={currentChapter}
+              nowPlayerPlaying={nowPlaying}
+            />
+          ) : (
+            <NoChapters
+              className="flex flex-col flex-grow mb-52 gap-5 justify-center"
+              videoId={videoId}
+            />
+          )
         ) : (
-          <NoChapters
-            className="flex flex-col flex-grow mb-52 gap-5 justify-center"
-            videoId={videoId}
-          />
+          <div>Loading...</div>
         )}
 
         <Youtube
@@ -181,6 +185,7 @@ function App() {
         onMute={() => setMuted(true)}
         onUnmute={() => setMuted(false)}
         muted={muted}
+        isVideoReady={isVideoReady}
       />
     </>
   );
