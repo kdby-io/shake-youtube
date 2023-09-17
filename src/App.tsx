@@ -175,6 +175,7 @@ function App() {
         setVolume={(volume) => {
           setVolume(volume);
           volume !== 0 && setMuted(false);
+          volume == 0 && setMuted(true);
         }}
         volume={volume}
         onMute={() => setMuted(true)}
