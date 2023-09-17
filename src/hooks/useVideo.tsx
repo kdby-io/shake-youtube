@@ -11,34 +11,31 @@ export const useVideo = () => {
   const [imageUrl, setImageUrl] = useState("");
 
   const shuffle = () => {
-    setChapters(_shuffle(chapters))
-  }
-
-  console.log(videoId, chapters.length)
+    setChapters(_shuffle(chapters));
+  };
 
   useEffect(() => {
     (async () => {
       const videoInfo = await getVideo(videoId);
 
-      setTitle(videoInfo.title)
-      setImageUrl(videoInfo?.thumbnails.maxres
-        ? videoInfo?.thumbnails.maxres.url ?? ""
-        : videoInfo?.thumbnails.medium.url ?? "")
+      setTitle(videoInfo.title);
+      setImageUrl(
+        videoInfo?.thumbnails.maxres
+          ? videoInfo?.thumbnails.maxres.url ?? ""
+          : videoInfo?.thumbnails.medium.url ?? ""
+      );
 
-      const chapterTexts = [
-        videoInfo.description,
-        ...videoInfo.comments,
-      ]
+      const chapterTexts = [videoInfo.description, ...videoInfo.comments];
 
       for (const chapterText of chapterTexts) {
         const chaptersInfo = parseYouTubeChapters(chapterText);
         if (chaptersInfo.length >= 3) {
-          setChapters(_shuffle(chaptersInfo))
+          setChapters(_shuffle(chaptersInfo));
           return;
         }
       }
-    })()
-  }, [videoId])
+    })();
+  }, [videoId]);
 
   return {
     videoId,
@@ -46,5 +43,5 @@ export const useVideo = () => {
     imageUrl,
     chapters,
     shuffle,
-  }
-}
+  };
+};
