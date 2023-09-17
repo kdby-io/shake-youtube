@@ -5,7 +5,7 @@ import { useSearchParams } from "./useSearchParams";
 import { shuffle as _shuffle } from "lodash";
 
 export const useVideo = () => {
-  const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6g";
+  const videoId = useSearchParams("v") ?? "SWqQQ6Yb-6";
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -32,6 +32,7 @@ export const useVideo = () => {
         const chaptersInfo = parseYouTubeChapters(chapterText);
         if (chaptersInfo.length >= 3) {
           setChapters(_shuffle(chaptersInfo));
+
           SetIsVidoesReady(true);
           return;
         }
