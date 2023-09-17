@@ -15,7 +15,7 @@ const playerOpts: YouTubeProps["opts"] = {
 let timer: NodeJS.Timeout;
 
 function App() {
-  const { videoId, title, imageUrl, chapters } = useVideo()
+  const { videoId, title, imageUrl, chapters } = useVideo();
   const startTimes = chapters.map((chapter) => chapter.start);
 
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
@@ -26,8 +26,8 @@ function App() {
 
   const currentChapterIndex = chapters.findIndex(
     (chapter) => chapter.start <= playerTime && playerTime <= chapter.end
-  )
-  const currentChapter = chapters.at(currentChapterIndex)
+  );
+  const currentChapter = chapters.at(currentChapterIndex);
 
   const isChaptersExist: boolean = chapters.length !== 0 ? true : false;
 
@@ -52,12 +52,12 @@ function App() {
   }, [playerTime]);
 
   useEffect(() => {
-    muted ? player?.mute() : player?.unMute()
-  }, [muted])
+    muted ? player?.mute() : player?.unMute();
+  }, [muted]);
 
   useEffect(() => {
-    player?.setVolume(volume)
-  }, [volume])
+    player?.setVolume(volume);
+  }, [volume]);
 
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
     setPlayer(event.target);
@@ -90,12 +90,12 @@ function App() {
   };
 
   const handleChapterClick = (s: number, isCurrentChapter: boolean) => {
-    if (!nowPlaying && !isCurrentChapter) {
+    if (isCurrentChapter) {
+      nowPlaying ? pause() : play();
+    } else {
       player?.seekTo(s, true);
-      play()
+      play();
     }
-
-    isCurrentChapter ? pause() : play()
   };
 
   const play = () => player?.playVideo();
@@ -103,7 +103,9 @@ function App() {
 
   const movePrev = () => {
     const isCurrentIndexFirst = currentChapterIndex === 0;
-    const prevIndex = isCurrentIndexFirst ? chapters.length - 1 : currentChapterIndex - 1;
+    const prevIndex = isCurrentIndexFirst
+      ? chapters.length - 1
+      : currentChapterIndex - 1;
     const prevChapter = chapters[prevIndex];
     player?.seekTo(prevChapter.start, true);
   };
@@ -125,7 +127,7 @@ function App() {
       event.key === "Spacebar"
     ) {
       event.preventDefault();
-      nowPlaying ? pause() : play()
+      nowPlaying ? pause() : play();
     }
   };
 
@@ -170,9 +172,9 @@ function App() {
         onMovePrev={movePrev}
         onMoveNext={moveNext}
         currentChapter={currentChapter}
-        setVolume={volume => {
-          setVolume(volume)
-          volume !== 0 && setMuted(false)
+        setVolume={(volume) => {
+          setVolume(volume);
+          volume !== 0 && setMuted(false);
         }}
         volume={volume}
         onMute={() => setMuted(true)}
