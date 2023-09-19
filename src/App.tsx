@@ -27,7 +27,7 @@ function App() {
   const currentChapterIndex = chapters.findIndex(
     (chapter) => chapter.start <= playerTime && playerTime <= chapter.end
   );
-  const currentChapter = chapters[currentChapterIndex]
+  const currentChapter = chapters[currentChapterIndex];
 
   const isChaptersExist: boolean = chapters.length !== 0 ? true : false;
 
@@ -186,6 +186,7 @@ function App() {
         onUnmute={() => setMuted(false)}
         muted={muted}
         isVideoReady={isVideoReady}
+        isChaptersExist={isChaptersExist}
       />
     </>
   );

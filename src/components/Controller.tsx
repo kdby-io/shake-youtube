@@ -23,6 +23,7 @@ type Props = {
   onUnmute: () => void;
   muted: boolean;
   isVideoReady: boolean;
+  isChaptersExist: boolean;
 };
 export const Controller = ({
   nowPlaying,
@@ -37,6 +38,7 @@ export const Controller = ({
   onUnmute,
   muted,
   isVideoReady,
+  isChaptersExist,
 }: Props) => {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
@@ -51,7 +53,7 @@ export const Controller = ({
       <div className="controller flex items-center justify-between bg-[#1A1B21] rounded-3xl px-14 py-7 fixed bottom-6 w-10/12">
         <div className="flex basis-1/3 items-center gap-6 min-w-0">
           {isVideoReady ? (
-            currentChapter ? (
+            isChaptersExist ? (
               <>
                 <Lottie
                   className="h-12 w-12 flex-shrink-0"
@@ -60,13 +62,11 @@ export const Controller = ({
                   animationData={playingIconData}
                 />
                 <div className="min-w-0 whitespace-nowrap overflow-hidden text-ellipsis">
-                  {currentChapter.title}
+                  {currentChapter ? currentChapter.title : ""}
                 </div>
               </>
             ) : (
-              <div className="text-[#8A9397] opacity-70">
-                재생 가능한 음악 없음
-              </div>
+              <div className="text-[#8A9397] opacity-70">No music found</div>
             )
           ) : (
             <div>Loading...</div>
