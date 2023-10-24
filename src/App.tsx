@@ -15,7 +15,8 @@ const playerOpts: YouTubeProps["opts"] = {
 let timer: NodeJS.Timeout;
 
 function App() {
-  const { videoId, title, imageUrl, chapters, isVideoReady } = useVideo();
+  const { videoId, title, imageUrl, chapters, isVideoReady, shuffle } =
+    useVideo();
   const startTimes = chapters.map((chapter) => chapter.start);
 
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
@@ -131,6 +132,10 @@ function App() {
     }
   };
 
+  const handleShuffleIconClick = () => {
+    shuffle();
+  };
+
   window.addEventListener("keydown", handleKeyPress);
 
   return (
@@ -187,6 +192,7 @@ function App() {
         muted={muted}
         isVideoReady={isVideoReady}
         isChaptersExist={isChaptersExist}
+        onShuffle={handleShuffleIconClick}
       />
     </>
   );

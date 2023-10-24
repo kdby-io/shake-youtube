@@ -8,7 +8,7 @@ import playingIconData from "../assets/playing.json";
 import { useEffect, useRef } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import { BiVolumeFull, BiVolumeMute } from "react-icons/bi";
+import { BiVolumeFull, BiVolumeMute, BiShuffle } from "react-icons/bi";
 
 type Props = {
   nowPlaying: boolean;
@@ -24,6 +24,7 @@ type Props = {
   muted: boolean;
   isVideoReady: boolean;
   isChaptersExist: boolean;
+  onShuffle: () => void;
 };
 export const Controller = ({
   nowPlaying,
@@ -39,6 +40,7 @@ export const Controller = ({
   muted,
   isVideoReady,
   isChaptersExist,
+  onShuffle,
 }: Props) => {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
@@ -98,12 +100,9 @@ export const Controller = ({
         </div>
         <div className="flex basis-1/3 justify-end items-center gap-3">
           <div>
-            {/* <img
-              className="cursor-pointer"
-              src={sound_icon}
-              alt="sound_icon"
-              onClick={() => handleSoundIconCLick()}
-            ></img> */}
+            <BiShuffle className="cursor-pointer w-6 h-6" onClick={onShuffle} />
+          </div>
+          <div>
             {muted ? (
               <BiVolumeMute
                 className="cursor-pointer w-6 h-6"
